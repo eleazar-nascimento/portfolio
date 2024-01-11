@@ -3,7 +3,7 @@ import { Download } from "lucide-react";
 
 export function HeroSection() {
   return (
-    <div className="flex flex-col-reverse gap-4 items-center justify-between w-full py-40 sm:flex-row sm:w-[980px]">
+    <div className="flex flex-col-reverse gap-4 items-center justify-between w-full p-10 sm:py-40 sm:flex-row sm:w-[980px]">
       <div className="flex flex-col gap-4">
         <div className="font-bold text-3xl sm:text-5xl text-center sm:text-left">Olá, eu sou <br/> Eleazar Nascimento</div>
         <div className="font-semibold text-zinc-900 opacity-50 text-center sm:text-medium sm:text-left">Desenvolvedor de Software Javascript</div>
