@@ -6,7 +6,7 @@ export function HeroSection() {
     <div className="flex flex-col-reverse gap-4 items-center justify-between w-full py-40 sm:flex-row sm:w-[980px]">
       <div className="flex flex-col gap-4">
         <div className="font-bold text-3xl sm:text-5xl text-center sm:text-left">Olá, eu sou <br/> Eleazar Nascimento</div>
-        <div className="font-semibold text-zinc-900 opacity-50 ">Desenvolvedor de Software Javascript</div>
+        <div className="font-semibold text-zinc-900 opacity-50 text-center sm:text-medium sm:text-left">Desenvolvedor de Software Javascript</div>
         <div className="font-semibold text-zinc-900 text-sm text-center sm:text-medium sm:text-left">Sou apaixonado por Tecnolgia, amo dar vida a ideias que se <br/> tornam produtos propostos pelas empresas/clientes.</div>
         <div className="flex gap-3 w-full justify-center sm:justify-start">
           <Button className="flex items-center text-sm font-bold text-zinc-900 bg-green-400 w-36" variant="bordered">
