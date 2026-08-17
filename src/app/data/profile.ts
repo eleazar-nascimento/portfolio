@@ -461,52 +461,47 @@ export const services: Service[] = [
 // Projetos
 // ---------------------------------------------------------------------------
 
-// TODO: substituir pelos seus projetos reais (é só trocar os dados abaixo).
+/**
+ * Para adicionar um projeto novo, copie o bloco abaixo e troque os dados.
+ * A lista de filtros da seção é gerada automaticamente a partir de `tech`.
+ *
+ * {
+ *   slug: 'identificador-unico',
+ *   name: 'Nome do Projeto',
+ *   tagline: 'Uma linha: qual problema resolve',
+ *   description: 'O que faz, como foi construído e o que tem de interessante.',
+ *   image: '/images/nome-do-print.png',
+ *   tech: ['React', 'TypeScript'],
+ *   repo: 'https://github.com/...',
+ *   demo: 'https://...',
+ *   year: '2026',
+ * }
+ */
 export const projects: Project[] = [
   {
-    slug: 'exemplo-gestao-financeira',
-    name: 'Sistema de Gestão Financeira',
-    tagline: 'Controle de operações de crédito ponta a ponta',
+    slug: 'quiz-estilo-de-apego',
+    name: 'Quiz de Estilo de Apego',
+    tagline: 'Questionário que revela como você se conecta nos relacionamentos',
     description:
-      'Exemplo de card. Substitua pelos dados do projeto: qual problema resolve, o que você construiu e qual foi o resultado.',
-    image: '/images/image.png',
-    tech: ['React', 'Next.js', 'TypeScript', 'Clean Architecture'],
-    repo: 'https://github.com/eleazar-nascimento',
+      'Aplicação interativa que identifica o estilo de apego do usuário — seguro, ansioso, evitativo ou desorganizado — com base na Teoria do Apego de Bowlby e Ainsworth, entregando uma análise com pontos fortes e caminhos de crescimento. Interface em glassmorphism, suporte a português e inglês, e regras isoladas em hooks próprios (useQuizLogic, useQuizData e useLocalization) para manter as telas simples.',
+    image: '/images/quiz-app.png',
+    tech: ['React', 'TypeScript', 'Vite', 'Tailwind CSS', 'i18n'],
+    repo: 'https://github.com/eleazar-nascimento/quiz-app',
+    demo: 'https://quiz-app-chi-drab-27.vercel.app',
     featured: true,
-    year: '2026',
-  },
-  {
-    slug: 'exemplo-painel-rh',
-    name: 'Painel Administrativo de RH',
-    tagline: 'Gestão de pessoas e auditoria de folha de pagamento',
-    description:
-      'Exemplo de card. Substitua pelos dados do projeto: qual problema resolve, o que você construiu e qual foi o resultado.',
-    image: '/images/image.png',
-    tech: ['React', 'TypeScript', 'React Hooks'],
-    repo: 'https://github.com/eleazar-nascimento',
     year: '2025',
   },
   {
-    slug: 'exemplo-design-system',
-    name: 'Design System em Monorepo',
-    tagline: 'Componentes compartilhados entre múltiplos produtos',
+    slug: 'moveit',
+    name: 'move.it',
+    tagline: 'Pomodoro gamificado para quem passa o dia no computador',
     description:
-      'Exemplo de card. Substitua pelos dados do projeto: qual problema resolve, o que você construiu e qual foi o resultado.',
-    image: '/images/image.png',
-    tech: ['React', 'NX', 'Radix UI', 'Stitches'],
-    repo: 'https://github.com/eleazar-nascimento',
-    year: '2022',
-  },
-  {
-    slug: 'exemplo-intranet',
-    name: 'Painel Intranet Full Stack',
-    tagline: 'Front-end e back-end na mesma entrega',
-    description:
-      'Exemplo de card. Substitua pelos dados do projeto: qual problema resolve, o que você construiu e qual foi o resultado.',
-    image: '/images/image.png',
-    tech: ['React', 'Vite', 'Node.js', 'Prisma', 'PostgreSQL'],
-    repo: 'https://github.com/eleazar-nascimento',
-    year: '2023',
+      'App de produtividade que une a técnica Pomodoro a um sistema de níveis: cada ciclo de 20 minutos termina em um desafio de alongamento ou descanso visual que rende XP e faz o usuário subir de level. Estado global com Context API, progresso salvo em cookies para não perder o avanço e notificação nativa do navegador com som ao fim do ciclo.',
+    image: '/images/moveit.png',
+    tech: ['React', 'Next.js', 'TypeScript', 'Context API', 'CSS Modules'],
+    repo: 'https://github.com/eleazar-nascimento/moveit-next',
+    demo: 'https://moveit-next-two-amber.vercel.app',
+    year: '2021',
   },
 ]
 

@@ -22,6 +22,17 @@ export function ProjectSection() {
     return projects.filter((project) => project.tech.includes(activeFilter))
   }, [activeFilter])
 
+  /** Com poucos projetos o filtro só ocupa espaço */
+  const showFilters = projects.length >= 3
+
+  /** Evita card solto ocupando 1/3 da largura quando há poucos projetos */
+  const gridColumns =
+    visibleProjects.length === 1
+      ? 'max-w-2xl'
+      : visibleProjects.length === 2
+        ? 'sm:grid-cols-2'
+        : 'sm:grid-cols-2 lg:grid-cols-3'
+
   const github = socials.find((social) => social.icon === 'Github')
 
   return (
@@ -38,7 +49,8 @@ export function ProjectSection() {
           align="left"
         />
 
-        {/* Filtro por tecnologia */}
+        {/* Filtro por tecnologia (só faz sentido com alguns projetos na lista) */}
+        {showFilters && (
         <div
           className="flex flex-wrap gap-2"
           role="group"
@@ -64,8 +76,9 @@ export function ProjectSection() {
             )
           })}
         </div>
+        )}
 
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <div className={`grid gap-6 ${gridColumns}`}>
           {visibleProjects.map((project) => (
             <ProjectCard key={project.slug} project={project} />
           ))}
