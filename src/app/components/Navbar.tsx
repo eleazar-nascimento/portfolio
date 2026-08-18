@@ -3,7 +3,6 @@
 import { useEffect, useState } from 'react'
 import {
   Button,
-  Link,
   Navbar,
   NavbarBrand,
   NavbarContent,
@@ -13,6 +12,7 @@ import {
   NavbarMenuToggle,
 } from '@nextui-org/react'
 import { navLinks, profile, sectionIds } from '../data/profile'
+import { ThemeSwitcher } from './ThemeSwitcher'
 
 export function NavbarHeader() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -43,13 +43,13 @@ export function NavbarHeader() {
 
   return (
     <Navbar
-      className="bg-zinc-900"
+      className="bg-zinc-900 dark:bg-zinc-900"
       isBordered
       isMenuOpen={isMenuOpen}
       onMenuOpenChange={setIsMenuOpen}
       maxWidth="lg"
       classNames={{
-        base: 'bg-zinc-900 border-white/10',
+        base: 'bg-white dark:bg-zinc-900 border-zinc-200 dark:border-white/10',
         wrapper: 'px-6',
         item: [
           'flex',
@@ -65,22 +65,22 @@ export function NavbarHeader() {
           'data-[active=true]:after:rounded-[2px]',
           'data-[active=true]:after:bg-green-400',
         ],
-        menu: 'bg-zinc-900/95 pt-6',
-        toggleIcon: 'text-white',
+        menu: 'bg-white/95 dark:bg-zinc-900/95 pt-6',
+        toggleIcon: 'text-zinc-900 dark:text-white',
       }}
     >
       <NavbarContent justify="start">
         <NavbarMenuToggle
           aria-label={isMenuOpen ? 'Fechar menu' : 'Abrir menu'}
-          className="text-white sm:hidden"
+          className="text-zinc-900 dark:text-white sm:hidden"
         />
         <NavbarBrand>
-          <Link
-            className="font-bold text-white sm:text-lg"
+          <a
+            className="font-bold text-zinc-900 dark:text-white sm:text-lg"
             href={`#${sectionIds.hero}`}
           >
             {profile.name}
-          </Link>
+          </a>
         </NavbarBrand>
       </NavbarContent>
 
@@ -94,19 +94,22 @@ export function NavbarHeader() {
               isActive={isActive}
               className="data-[active=true]:font-bold"
             >
-              <Link
+              <a
                 aria-current={isActive ? 'page' : undefined}
-                className={`text-sm ${isActive ? 'text-green-400' : 'text-white'}`}
+                className={`text-sm ${isActive ? 'text-green-400' : 'text-zinc-600 dark:text-white'}`}
                 href={link.href}
               >
                 {link.label}
-              </Link>
+              </a>
             </NavbarItem>
           )
         })}
       </NavbarContent>
 
       <NavbarContent justify="end">
+        <NavbarItem className="flex">
+          <ThemeSwitcher />
+        </NavbarItem>
         <NavbarItem className="hidden sm:flex">
           <Button
             as="a"
@@ -122,16 +125,15 @@ export function NavbarHeader() {
       <NavbarMenu>
         {navLinks.map((link) => (
           <NavbarMenuItem key={link.id} isActive={activeSection === link.id}>
-            <Link
-              className={`w-full font-semibold ${
-                activeSection === link.id ? 'text-green-400' : 'text-white'
+            <a
+              className={`block w-full py-2 font-semibold ${
+                activeSection === link.id ? 'text-green-400' : 'text-zinc-700 dark:text-white'
               }`}
               href={link.href}
-              size="lg"
-              onPress={() => setIsMenuOpen(false)}
+              onClick={() => setIsMenuOpen(false)}
             >
               {link.label}
-            </Link>
+            </a>
           </NavbarMenuItem>
         ))}
       </NavbarMenu>

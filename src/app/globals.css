@@ -4,49 +4,34 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800;900&family=Open+Sans:wght@300;400;500;600;700;800&display=swap');
 
-/* Firefox */
+/* Scrollbar */
 * {
   scrollbar-width: thin;
-  scrollbar-color: var(--secondary) var(--primary);
+  scrollbar-color: #a1a1aa #f4f4f5;
 }
 
-/* Chrome, Edge, and Safari */
+:is(.dark) * {
+  scrollbar-color: #52525b #18181b;
+}
+
+/* Chrome, Edge, Safari */
 *::-webkit-scrollbar {
-  width: 15px;
+  width: 10px;
 }
 
 *::-webkit-scrollbar-track {
-  background: black;
-  /* border-radius: 5px; */
+  background: #f4f4f5;
 }
 
 *::-webkit-scrollbar-thumb {
-  background-color: gray;
+  background-color: #a1a1aa;
   border-radius: 14px;
-  /* border: 3px solid green; */
 }
 
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+:is(.dark) *::-webkit-scrollbar-track {
+  background: #18181b;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
-}
-
-body {
-  /* font-family: 'Nunito', sans-serif; */
-  /* color: rgb(var(--foreground-rgb)); */
-  /* background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb)); */
+:is(.dark) *::-webkit-scrollbar-thumb {
+  background-color: #52525b;
 }

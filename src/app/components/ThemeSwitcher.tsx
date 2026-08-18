@@ -1,9 +1,10 @@
-// app/components/ThemeSwitcher.tsx
-"use client";
+'use client'
 
-import {useTheme} from "next-themes";
-import { useEffect, useState } from "react";
-import { SwitchTheme } from "./Switch";
+import { useTheme } from 'next-themes'
+import { useEffect, useState } from 'react'
+import { Switch } from '@nextui-org/react'
+import { MoonIcon } from '../icons/MoonIcon'
+import { SunIcon } from '../icons/SunIcon'
 
 export function ThemeSwitcher() {
   const [mounted, setMounted] = useState(false)
@@ -13,20 +14,24 @@ export function ThemeSwitcher() {
     setMounted(true)
   }, [])
 
-  if(!mounted) return null
+  if (!mounted) return null
+
+  const isDark = theme === 'dark'
 
   return (
-    <div>
-      The current theme is: {theme}
-      <SwitchTheme
-        theme={theme}
-        onValueChange={(isSelected: boolean) => {
-          if(isSelected === true) setTheme('light')
-          if(isSelected === false) setTheme('dark')
-        }}
-      />
-      {/* <button onClick={() => setTheme('light')}>Light Mode</button>
-      <button onClick={() => setTheme('dark')}>Dark Mode</button> */}
-    </div>
+    <Switch
+      isSelected={!isDark}
+      onValueChange={(isSelected) => setTheme(isSelected ? 'light' : 'dark')}
+      size="sm"
+      color="success"
+      aria-label="Alternar entre tema claro e escuro"
+      thumbIcon={({ isSelected, className }) =>
+        isSelected ? (
+          <SunIcon className={className} />
+        ) : (
+          <MoonIcon className={className} />
+        )
+      }
+    />
   )
-};
+}

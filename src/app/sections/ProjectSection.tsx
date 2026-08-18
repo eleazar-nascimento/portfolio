@@ -38,7 +38,7 @@ export function ProjectSection() {
   return (
     <section
       id={sectionIds.projects}
-      className="w-full scroll-mt-20 bg-zinc-950 px-6 py-20 sm:py-28"
+      className="w-full scroll-mt-20 bg-zinc-950 dark:bg-zinc-950 px-6 py-20 sm:py-28"
     >
       <div className="mx-auto flex w-full max-w-[980px] flex-col gap-10">
         <SectionTitle

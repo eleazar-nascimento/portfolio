@@ -25,7 +25,7 @@ export function ServicesSection() {
   return (
     <section
       id={sectionIds.services}
-      className="w-full scroll-mt-20 bg-white px-6 py-20 sm:py-28"
+      className="w-full scroll-mt-20 bg-white dark:bg-zinc-900 px-6 py-20 sm:py-28"
     >
       <div className="mx-auto flex w-full max-w-[980px] flex-col gap-12">
         <SectionTitle
@@ -42,9 +42,9 @@ export function ServicesSection() {
             return (
               <article
                 key={service.title}
-                className="group flex h-full flex-col gap-4 rounded-2xl border border-zinc-200 bg-zinc-50/60 p-6 transition-all hover:-translate-y-1 hover:border-green-400 hover:bg-white hover:shadow-lg"
+                className="group flex h-full flex-col gap-4 rounded-2xl border border-zinc-200 dark:border-white/10 bg-zinc-50/60 dark:bg-zinc-800/40 p-6 transition-all hover:-translate-y-1 hover:border-green-400 hover:bg-white dark:hover:bg-zinc-800 hover:shadow-lg"
               >
-                <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-zinc-900 transition-colors group-hover:bg-green-400">
+                <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-zinc-900 dark:bg-zinc-950 transition-colors group-hover:bg-green-400">
                   <Icon
                     size={20}
                     className="text-green-400 transition-colors group-hover:text-zinc-900"
@@ -52,19 +52,19 @@ export function ServicesSection() {
                 </span>
 
                 <div className="flex flex-col gap-1.5">
-                  <h3 className="font-bold text-lg text-zinc-900">
+                  <h3 className="font-bold text-lg text-zinc-900 dark:text-white">
                     {service.title}
                   </h3>
-                  <p className="text-sm leading-relaxed text-zinc-600">
+                  <p className="text-sm leading-relaxed text-zinc-600 dark:text-gray-50/60">
                     {service.description}
                   </p>
                 </div>
 
-                <ul className="mt-auto flex flex-col gap-2 border-t border-zinc-100 pt-4">
+                <ul className="mt-auto flex flex-col gap-2 border-t border-zinc-100 dark:border-white/5 pt-4">
                   {service.deliverables.map((item) => (
                     <li
                       key={item}
-                      className="flex items-start gap-2 text-xs font-semibold text-zinc-500"
+                      className="flex items-start gap-2 text-xs font-semibold text-zinc-500 dark:text-gray-50/50"
                     >
                       <Check
                         size={13}
@@ -80,7 +80,7 @@ export function ServicesSection() {
           })}
         </div>
 
-        <div className="flex flex-col items-center gap-4 rounded-2xl bg-zinc-900 px-8 py-10 text-center sm:flex-row sm:justify-between sm:text-left">
+        <div className="flex flex-col items-center gap-4 rounded-2xl bg-zinc-900 dark:bg-zinc-950 px-8 py-10 text-center sm:flex-row sm:justify-between sm:text-left">
           <div className="flex flex-col gap-1">
             <h3 className="font-bold text-xl text-white sm:text-2xl">
               Tem um projeto em mente?

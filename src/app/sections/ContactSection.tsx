@@ -20,17 +20,17 @@ export function ContactSection() {
   return (
     <section
       id={sectionIds.contact}
-      className="w-full scroll-mt-20 bg-zinc-900 px-6 pb-12 pt-20 sm:pt-28"
+      className="w-full scroll-mt-20 bg-white dark:bg-zinc-900 px-6 pb-12 pt-20 sm:pt-28"
     >
       <div className="mx-auto flex w-full max-w-[980px] flex-col gap-12">
         <div className="flex flex-col items-center gap-2 text-center">
           <span className="font-bold text-xs tracking-[0.2em] text-green-500">
             CONTATO
           </span>
-          <h2 className="font-extrabold text-3xl text-white sm:text-4xl lg:text-5xl">
+          <h2 className="font-extrabold text-3xl text-zinc-900 dark:text-white sm:text-4xl lg:text-5xl">
             Vamos trabalhar juntos
           </h2>
-          <p className="max-w-xl font-semibold text-sm text-gray-50/60 sm:text-base">
+          <p className="max-w-xl font-semibold text-sm text-zinc-600 dark:text-gray-50/60 sm:text-base">
             Respondo rápido em qualquer um dos canais abaixo. Me chame para falar
             sobre vagas, freelances ou parcerias.
           </p>
@@ -43,18 +43,18 @@ export function ContactSection() {
             return (
               <a
                 key={social.label}
-                className="group flex flex-col items-center justify-center gap-2 rounded-2xl border border-white/10 p-6 text-center transition-colors hover:border-green-400/60"
+                className="group flex flex-col items-center justify-center gap-2 rounded-2xl border border-zinc-200 dark:border-white/10 p-6 text-center transition-colors hover:border-green-400/60"
                 href={social.href}
                 rel="noopener noreferrer"
                 target="_blank"
               >
-                <span className="flex h-[50px] w-[50px] items-center justify-center rounded-full border border-yellow-400 bg-zinc-800 transition-colors group-hover:border-green-400">
-                  <Icon className="text-yellow-400 transition-colors group-hover:text-green-400" />
+                <span className="flex h-[50px] w-[50px] items-center justify-center rounded-full border border-green-400 dark:border-yellow-400 bg-zinc-100 dark:bg-zinc-800 transition-colors group-hover:border-green-400">
+                  <Icon className="text-green-600 dark:text-yellow-400 transition-colors group-hover:text-green-400" />
                 </span>
-                <span className="font-bold text-lg text-white">
+                <span className="font-bold text-lg text-zinc-900 dark:text-white">
                   {social.label}
                 </span>
-                <span className="break-all font-Nunito text-sm font-semibold text-gray-50/50">
+                <span className="break-all font-Nunito text-sm font-semibold text-zinc-500 dark:text-gray-50/50">
                   {social.display}
                 </span>
               </a>
@@ -62,12 +62,12 @@ export function ContactSection() {
           })}
         </div>
 
-        <footer className="flex flex-col items-center gap-2 border-t border-white/10 pt-8 text-center sm:flex-row sm:justify-between sm:text-left">
-          <p className="text-sm font-semibold text-gray-50/40">
+        <footer className="flex flex-col items-center gap-2 border-t border-zinc-200 dark:border-white/10 pt-8 text-center sm:flex-row sm:justify-between sm:text-left">
+          <p className="text-sm font-semibold text-zinc-400 dark:text-gray-50/40">
             © {new Date().getFullYear()} {profile.name}. Feito com Next.js,
             TypeScript e Tailwind CSS.
           </p>
-          <p className="flex items-center gap-2 text-sm font-semibold text-gray-50/40">
+          <p className="flex items-center gap-2 text-sm font-semibold text-zinc-400 dark:text-gray-50/40">
             <MapPin size={14} className="text-green-500" />
             {profile.location}
           </p>

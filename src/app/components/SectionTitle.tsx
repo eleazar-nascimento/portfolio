@@ -3,7 +3,7 @@ type SectionTitleProps = {
   eyebrow?: string
   title: string
   subtitle?: string
-  /** Usa cores claras (para seções com fundo escuro) */
+  /** Usa cores claras (para seções com fundo escuro) — só afeta no modo claro */
   inverted?: boolean
   align?: 'center' | 'left'
 }
@@ -27,7 +27,9 @@ export function SectionTitle({
       )}
       <h2
         className={`font-extrabold text-3xl sm:text-4xl lg:text-5xl ${
-          inverted ? 'text-white' : 'text-zinc-900'
+          inverted
+            ? 'text-white'
+            : 'text-zinc-900 dark:text-white'
         }`}
       >
         {title}
@@ -35,7 +37,9 @@ export function SectionTitle({
       {subtitle && (
         <p
           className={`font-semibold text-sm sm:text-base max-w-2xl ${
-            inverted ? 'text-gray-50/60' : 'text-zinc-900/50'
+            inverted
+              ? 'text-gray-50/60'
+              : 'text-zinc-900/50 dark:text-gray-50/60'
           }`}
         >
           {subtitle}

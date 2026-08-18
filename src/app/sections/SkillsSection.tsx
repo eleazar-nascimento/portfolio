@@ -23,14 +23,13 @@ export function SkillsSection() {
   return (
     <section
       id={sectionIds.skills}
-      className="w-full scroll-mt-20 bg-zinc-950 px-6 py-20 sm:py-28"
+      className="w-full scroll-mt-20 bg-zinc-100 dark:bg-zinc-950 px-6 py-20 sm:py-28"
     >
       <div className="mx-auto flex w-full max-w-[980px] flex-col gap-12">
         <SectionTitle
           eyebrow="STACK"
           title="Habilidades"
           subtitle="As tecnologias que uso no dia a dia para construir e manter produtos"
-          inverted
           align="left"
         />
 
@@ -41,17 +40,17 @@ export function SkillsSection() {
             return (
               <div
                 key={group.title}
-                className="flex h-full flex-col gap-4 rounded-2xl border border-white/10 bg-zinc-800/60 p-6 transition-colors hover:border-green-400/50"
+                className="flex h-full flex-col gap-4 rounded-2xl border border-zinc-200 dark:border-white/10 bg-white dark:bg-zinc-800/60 p-6 transition-colors hover:border-green-400/50"
               >
                 <div className="flex items-center gap-3">
-                  <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-yellow-400/60 bg-zinc-900">
-                    <Icon size={18} className="text-yellow-400" />
+                  <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-green-400/60 dark:border-yellow-400/60 bg-zinc-100 dark:bg-zinc-900">
+                    <Icon size={18} className="text-green-600 dark:text-yellow-400" />
                   </span>
                   <div className="flex flex-col">
-                    <h3 className="font-bold text-base text-white">
+                    <h3 className="font-bold text-base text-zinc-900 dark:text-white">
                       {group.title}
                     </h3>
-                    <p className="text-xs font-semibold text-gray-50/50">
+                    <p className="text-xs font-semibold text-zinc-500 dark:text-gray-50/50">
                       {group.description}
                     </p>
                   </div>
@@ -61,7 +60,7 @@ export function SkillsSection() {
                   {group.skills.map((skill) => (
                     <li
                       key={skill}
-                      className="rounded-full border border-white/10 bg-zinc-900/70 px-3 py-1 text-xs font-semibold text-gray-50/80"
+                      className="rounded-full border border-zinc-200 dark:border-white/10 bg-zinc-50 dark:bg-zinc-900/70 px-3 py-1 text-xs font-semibold text-zinc-700 dark:text-gray-50/80"
                     >
                       {skill}
                     </li>

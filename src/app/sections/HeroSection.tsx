@@ -18,24 +18,24 @@ export function HeroSection() {
   return (
     <section
       id={sectionIds.hero}
-      className="w-full scroll-mt-20 bg-white px-6 py-16 sm:py-28"
+      className="w-full scroll-mt-20 bg-white dark:bg-zinc-950 px-6 py-16 sm:py-28"
     >
       <div className="mx-auto flex w-full max-w-[980px] flex-col-reverse items-center justify-between gap-10 sm:flex-row">
         <div className="flex flex-col gap-4">
-          <span className="flex w-fit items-center gap-2 self-center rounded-full border border-green-400 bg-green-400/10 px-3 py-1 text-xs font-bold text-green-700 sm:self-start">
+          <span className="flex w-fit items-center gap-2 self-center rounded-full border border-green-400 bg-green-400/10 px-3 py-1 text-xs font-bold text-green-700 dark:text-green-400 sm:self-start">
             <span className="h-2 w-2 animate-pulse rounded-full bg-green-500" />
             {profile.availability}
           </span>
 
-          <h1 className="font-bold text-3xl text-center text-zinc-900 sm:text-5xl sm:text-left">
+          <h1 className="font-bold text-3xl text-center text-zinc-900 dark:text-white sm:text-5xl sm:text-left">
             Olá, eu sou <br /> {profile.name}
           </h1>
 
-          <p className="text-center font-semibold text-zinc-900/50 sm:text-medium sm:text-left">
+          <p className="text-center font-semibold text-zinc-900/50 dark:text-gray-50/50 sm:text-medium sm:text-left">
             {profile.role} · {profile.seniority}
           </p>
 
-          <p className="max-w-lg text-center text-sm font-semibold text-zinc-900 sm:text-medium sm:text-left">
+          <p className="max-w-lg text-center text-sm font-semibold text-zinc-900 dark:text-gray-50/80 sm:text-medium sm:text-left">
             {profile.summary}
           </p>
 
@@ -52,7 +52,7 @@ export function HeroSection() {
             </Button>
             <Button
               as="a"
-              className="w-40 hover:bg-zinc-100"
+              className="w-40 text-zinc-900 dark:text-white border-zinc-300 dark:border-white/30 hover:bg-zinc-100 dark:hover:bg-white/10"
               endContent={<ArrowRight size={15} />}
               href={`#${sectionIds.contact}`}
               variant="bordered"
@@ -69,7 +69,7 @@ export function HeroSection() {
                 <a
                   key={social.label}
                   aria-label={social.label}
-                  className="flex h-10 w-10 items-center justify-center rounded-full border border-zinc-200 text-zinc-700 transition-colors hover:border-green-400 hover:text-green-600"
+                  className="flex h-10 w-10 items-center justify-center rounded-full border border-zinc-200 dark:border-white/20 text-zinc-700 dark:text-gray-50/70 transition-colors hover:border-green-400 hover:text-green-600 dark:hover:text-green-400"
                   href={social.href}
                   rel="noopener noreferrer"
                   target="_blank"
