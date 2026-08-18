@@ -10,6 +10,7 @@ const navLinks = [
   { label: 'Work', href: '/' },
   { label: 'Play', href: '/play' },
   { label: 'About', href: '/about' },
+  { label: 'Resume', href: '/resume' },
 ]
 
 export function NavbarHeader() {
@@ -49,14 +50,6 @@ export function NavbarHeader() {
               </Link>
             )
           })}
-          <a
-            href={profile.resume}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-sm text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white transition-colors"
-          >
-            Resume
-          </a>
           <ThemeSwitcher />
         </div>
 
@@ -99,14 +92,6 @@ export function NavbarHeader() {
               {link.label}
             </Link>
           ))}
-          <a
-            href={profile.resume}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-base font-medium text-zinc-500 dark:text-zinc-400"
-          >
-            Resume
-          </a>
         </div>
       )}
     </header>

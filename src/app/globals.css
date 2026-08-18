@@ -54,3 +54,20 @@
 :is(.dark) *::-webkit-scrollbar-thumb {
   background-color: #52525b;
 }
+
+
+/* Print styles for /resume page */
+@media print {
+  body {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  header, footer, nav {
+    display: none !important;
+  }
+
+  main {
+    padding: 0 !important;
+  }
+}
