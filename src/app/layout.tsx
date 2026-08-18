@@ -1,17 +1,22 @@
 import type { Metadata } from 'next'
 import { Nunito } from 'next/font/google'
+import { ViewTransitions } from 'next-view-transitions'
 import './globals.css'
 import { Providers } from './providers'
 import { profile } from './data/profile'
+import { NavbarHeader } from './components/Navbar'
+import { Footer } from './components/Footer'
 
 const nunito = Nunito({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  // TODO: troque pelo domínio final quando publicar (ex.: https://eleazar.dev)
   metadataBase: new URL(
     process.env.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:3000',
   ),
-  title: `${profile.name} | ${profile.role}`,
+  title: {
+    default: `${profile.name} | ${profile.role}`,
+    template: `%s | ${profile.name}`,
+  },
   description: profile.summary,
   keywords: [
     'desenvolvedor javascript',
@@ -38,10 +43,18 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="pt-BR" className="scroll-smooth" suppressHydrationWarning>
-      <body className={nunito.className}>
-        <Providers>{children}</Providers>
-      </body>
-    </html>
+    <ViewTransitions>
+      <html lang="pt-BR" className="scroll-smooth" suppressHydrationWarning>
+        <body className={nunito.className}>
+          <Providers>
+            <div className="flex min-h-screen flex-col">
+              <NavbarHeader />
+              <main className="flex-1">{children}</main>
+              <Footer />
+            </div>
+          </Providers>
+        </body>
+      </html>
+    </ViewTransitions>
   )
 }

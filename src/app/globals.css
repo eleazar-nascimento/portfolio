@@ -4,6 +4,25 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800;900&family=Open+Sans:wght@300;400;500;600;700;800&display=swap');
 
+/* View Transitions */
+::view-transition-old(root) {
+  animation: fade-out 200ms ease-out;
+}
+
+::view-transition-new(root) {
+  animation: fade-in 300ms ease-in;
+}
+
+@keyframes fade-out {
+  from { opacity: 1; transform: translateY(0); }
+  to   { opacity: 0; transform: translateY(-8px); }
+}
+
+@keyframes fade-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
 /* Scrollbar */
 * {
   scrollbar-width: thin;
