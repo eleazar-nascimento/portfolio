@@ -154,6 +154,11 @@ export default function AboutPage() {
                   {exp.company}
                   {exp.location ? ` · ${exp.location}` : ''}
                 </p>
+                {exp.companyDescription && (
+                  <p className="text-xs italic text-zinc-400 dark:text-zinc-500">
+                    {exp.companyDescription}
+                  </p>
+                )}
                 <ul className="flex flex-col gap-1 pt-1">
                   {exp.highlights.map((h) => (
                     <li key={h} className="text-sm text-zinc-500 dark:text-zinc-400">

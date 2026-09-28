@@ -25,6 +25,8 @@ export type Social = {
 export type Experience = {
   role: string
   company: string
+  /** O que a empresa faz / contexto da atuação */
+  companyDescription?: string
   /** Ex.: "out 2025" */
   start: string
   /** Ex.: "atual" */
@@ -94,11 +96,11 @@ export const profile = {
   location: 'Cariacica, ES · Brasil',
   availability: 'Aberto a novas oportunidades',
   photo: '/images/image.png',
-  resume: '/curriculo-eleazar-nascimento.pdf',
+  resume: '/cv-eleazar-da-silva-nascimento-2.pdf',
   headline:
     'Construo interfaces escaláveis e de alta performance no ecossistema React.',
   summary:
-    'Desenvolvedor Front-end com mais de 6 anos de experiência (desde 2020) na criação de interfaces escaláveis e de alta performance. Especialista no ecossistema React, com sólido domínio de Clean Architecture e foco constante em entregar código sustentável e orientado a resultados de negócio.',
+    'Desenvolvedor Front-end com mais de 6 anos de experiência em React, TypeScript, Next.js e JavaScript, especializado na construção de interfaces escaláveis e de alta performance. Aplico Clean Architecture para desenvolver soluções sustentáveis e manuteníveis, conectando qualidade técnica às necessidades e aos resultados do negócio.',
 }
 
 // ---------------------------------------------------------------------------
@@ -139,35 +141,41 @@ export const experiences: Experience[] = [
   {
     role: 'Frontend Engineer',
     company: 'Hub Crédito',
+    companyDescription:
+      'Empresa do setor financeiro, com atuação em sistemas de gestão financeira, motores de crédito e soluções comerciais.',
     start: 'out 2025',
     end: 'jul 2026',
     duration: '10 meses',
     location: 'Vila Velha, ES',
     highlights: [
-      'Desenvolvimento de sistemas de gestão financeira em React, Next.js e TypeScript.',
-      'Migração de sistemas legados para novos projetos, sem interromper a operação.',
-      'Aplicação de Clean Architecture, S.O.L.I.D e Design Patterns na base de código.',
-      'Cobertura de regras críticas com testes unitários.',
+      'Desenvolvo e modernizo sistemas de gestão financeira com React, Next.js e TypeScript, conduzindo a migração de aplicações legadas para novas soluções.',
+      'Estruturo aplicações com Clean Architecture, princípios SOLID e Design Patterns, melhorando a separação de responsabilidades e a manutenibilidade do código.',
+      'Desenvolvo painéis para o motor de crédito, organizando informações operacionais para facilitar o acompanhamento das atividades financeiras.',
+      'Refatoro o painel de vendas, reorganizando a base de código e tornando a evolução de novas funcionalidades mais eficiente.',
+      'Implemento testes unitários para aumentar a confiabilidade das alterações e reduzir riscos de regressão.',
     ],
     stack: [
       'React',
       'Next.js',
       'TypeScript',
       'Clean Architecture',
-      'S.O.L.I.D',
+      'SOLID',
       'Testes unitários',
     ],
   },
   {
     role: 'Frontend Developer',
     company: 'UseRH',
+    companyDescription:
+      'Produtos digitais para Recursos Humanos: painel administrativo, rede social profissional e soluções de auditoria de folha de pagamento.',
     start: 'jan 2023',
     end: 'set 2025',
     duration: '2 anos 9 meses',
     highlights: [
-      'Construção de painel administrativo para RH e de uma rede social corporativa.',
-      'Desenvolvimento de projetos de auditoria de folha de pagamento.',
-      'Refatoração da estrutura de organização do código em diversos projetos internos, seguindo os princípios de refatoração de Martin Fowler.',
+      'Desenvolvi funcionalidades para um painel administrativo de RH com React, TypeScript, React Hooks, Next.js e CSS, apoiando a digitalização dos processos de gestão de pessoas.',
+      'Contribuí para a construção de uma rede social voltada ao setor de RH, criando novas experiências para os usuários da plataforma.',
+      'Desenvolvi funcionalidades para projetos de auditoria de folha de pagamento, apoiando a análise e a conferência de informações salariais.',
+      'Refatorei diversos projetos internos aplicando os princípios de refatoração de Martin Fowler, tornando o código mais legível, limpo e sustentável.',
     ],
     stack: [
       'React',
@@ -181,13 +189,17 @@ export const experiences: Experience[] = [
   {
     role: 'Fullstack Developer',
     company: 'Mesh Automação e Sistemas',
+    companyDescription:
+      'Empresa de automação e sistemas. Desenvolvi uma solução fullstack para gestão de recursos de irrigação conectados a Arduinos.',
     start: 'fev 2023',
     end: 'mai 2023',
     duration: '4 meses',
     location: 'Espírito Santo, Brasil',
     highlights: [
-      'Desenvolvimento de um painel intranet de ponta a ponta.',
-      'Front-end em React com Vite e TypeScript; back-end em Node.js com Prisma e PostgreSQL.',
+      'Desenvolvi de ponta a ponta um painel intranet para gestão de recursos de irrigação conectados a Arduinos, centralizando as informações operacionais em uma única interface.',
+      'Implementei o frontend com React, Vite, TypeScript e Bootstrap.',
+      'Desenvolvi o backend com Node.js, TypeScript, PostgreSQL e Prisma.js, organizando a persistência e o acesso aos dados.',
+      'Integrei interface, serviços e banco de dados em uma solução fullstack coesa.',
     ],
     stack: [
       'React',
@@ -202,39 +214,40 @@ export const experiences: Experience[] = [
   {
     role: 'Frontend Developer',
     company: 'Growth Venture',
+    companyDescription:
+      'Produtos digitais para vendas, multipropriedades, geração de leads, e-commerce e modelos de assinatura.',
     start: 'jul 2022',
     end: 'out 2022',
     duration: '4 meses',
     highlights: [
-      'Front-end de produtos em monorepo com NX, dentro de uma venture builder.',
-      'Construção de design system com Radix UI e Stitches, reaproveitado entre aplicações.',
-      'Arquitetura orientada a domínio (DDD) e Clean Architecture, com testes em Jest.',
+      'Implementei um dashboard de funil de vendas, ampliando a visibilidade sobre as etapas do processo comercial.',
+      'Refatorei o projeto de multipropriedades com Clean Architecture, Domain-Driven Design e separação de responsabilidades.',
+      'Desenvolvi landing pages orientadas à captação de leads e conversão.',
+      'Desenvolvi um e-commerce de cosméticos e projetos de assinatura de planos odontológicos e chips internacionais.',
     ],
     stack: [
       'React',
       'Next.js',
       'TypeScript',
-      'NX',
-      'Radix UI',
-      'Stitches',
-      'Redux',
-      'React Hook Form',
-      'Node.js',
-      'Jest',
+      'Clean Architecture',
       'DDD',
+      'Landing pages',
     ],
   },
   {
     role: 'Desenvolvedor Web Front-end',
     company: '2Share Multipropriedades',
+    companyDescription:
+      'Soluções digitais para gestão de multipropriedades e acompanhamento de funis de vendas.',
     start: 'out 2020',
     end: 'ago 2022',
     duration: '1 ano 11 meses',
     location: 'Brasil',
     highlights: [
-      'Desenvolvimento das interfaces do produto de multipropriedade.',
-      'Aplicação de Clean Architecture e DDD com React, Next.js e TypeScript.',
-      'Testes automatizados com Jest e estilização com Styled Components.',
+      'Desenvolvi funcionalidades para sistemas de gestão de multipropriedades e funil de vendas com React, Next.js e TypeScript.',
+      'Refatorei e reescrevi o painel de multipropriedades, ampliando a componentização e a manutenibilidade do código.',
+      'Estruturei a aplicação frontend com Clean Architecture, DDD, React Hooks, Redux e Styled Components.',
+      'Implementei testes automatizados com Jest, aumentando a segurança das alterações.',
     ],
     stack: [
       'React',
@@ -249,19 +262,23 @@ export const experiences: Experience[] = [
   {
     role: 'Desenvolvedor',
     company: 'Secretaria de Estado da Fazenda do Espírito Santo (SEFAZ-ES)',
+    companyDescription:
+      'Órgão público estadual. Atuei no desenvolvimento frontend do projeto de ITCMD, modernizando uma solução voltada aos processos tributários.',
     start: 'jun 2020',
     end: 'out 2020',
     duration: '5 meses',
     location: 'Brasil',
     highlights: [
-      'Front-end do projeto do ITCMD dentro do time de desenvolvimento da SEFAZ.',
-      'Primeira experiência profissional em desenvolvimento, em ambiente de governo.',
+      'Desenvolvi funcionalidades frontend para o projeto de ITCMD com PHP, Laravel, HTML5, CSS3, Bootstrap e jQuery.',
+      'Refatorei o sistema para melhorar a performance e modernizar a experiência visual da aplicação.',
     ],
     stack: ['PHP', 'Laravel', 'HTML5', 'CSS3', 'Bootstrap', 'jQuery'],
   },
   {
     role: 'Auxiliar de TI (antes: estagiário e menor aprendiz)',
     company: 'A Madeira Indústria e Comércio',
+    companyDescription:
+      'Onde iniciei minha trajetória profissional, do programa de menor aprendiz até funções de TI.',
     start: 'fev 2014',
     end: 'jun 2020',
     duration: '6 anos',
