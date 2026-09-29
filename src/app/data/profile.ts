@@ -74,6 +74,52 @@ export type Project = {
   /** Destaca o projeto em card maior */
   featured?: boolean
   year?: string
+  /** Quando preenchido, o projeto ganha uma seção de estudo de caso na home */
+  caseStudy?: CaseStudy
+}
+
+/**
+ * Estudo de caso de um projeto: problema, decisões de arquitetura com
+ * trade-offs, desafios técnicos e métricas. A estrutura segue o formato do
+ * README do repositório para facilitar manter os dois em sincronia.
+ */
+export type CaseStudy = {
+  /** Rótulo pequeno acima do título */
+  eyebrow: string
+  title: string
+  /** Subtítulo do topo da página, uma linha */
+  subtitle: string
+  /** Um parágrafo de contexto (seção "Visão geral") */
+  intro: string
+  /** Ficha técnica exibida no topo: papel, entrega, período, stack */
+  facts: { label: string; value: string }[]
+  problem: {
+    title: string
+    description: string
+    /** Os pontos que tornam o problema difícil */
+    points: string[]
+  }
+  /** Decisões de arquitetura, sempre com os dois lados da moeda */
+  decisions: {
+    /** Ex.: "Vite (SPA) em vez de Next.js (SSR/SSG)" */
+    choice: string
+    why: string
+    pros: string[]
+    cons: string[]
+  }[]
+  /** Problemas reais enfrentados durante a implementação */
+  challenges: {
+    title: string
+    challenge: string
+    solution: string
+  }[]
+  metrics?: {
+    /** Título do bloco, ex.: "Metas de performance" */
+    title: string
+    /** Deixa claro se os números são medidos ou alvo */
+    note?: string
+    items: { label: string; value: string; detail?: string }[]
+  }
 }
 
 export type Education = {
@@ -495,6 +541,143 @@ export const services: Service[] = [
  * }
  */
 export const projects: Project[] = [
+  {
+    slug: 'b2b-logistics-dashboard',
+    name: 'Enterprise B2B Logistics Dashboard',
+    tagline: 'Painel logístico que navega 10.000 remessas sem travar o DOM',
+    description:
+      'Dashboard analítico B2B para operação logística: KPIs de remessas, gráficos por status e uma tabela de 10.000 registros com busca, filtro, ordenação server-side e paginação. A tabela é virtualizada com TanStack Virtual, o estado assíncrono fica no TanStack Query e todo o estado de interface (filtros, página, ordenação) vive na URL, então qualquer recorte da operação pode ser compartilhado por link.',
+    image: '/images/b2b-dashboard.png',
+    tech: [
+      'React',
+      'TypeScript',
+      'Vite',
+      'TanStack Query',
+      'TanStack Virtual',
+      'Tailwind CSS',
+      'Recharts',
+    ],
+    repo: 'https://github.com/eleazar-nascimento/b2b-dashboard',
+    demo: 'https://b2b-dashboard-chi-one.vercel.app',
+    featured: true,
+    year: '2026',
+    caseStudy: {
+      eyebrow: 'ESTUDO DE CASO',
+      title: 'Enterprise B2B Logistics Dashboard',
+      subtitle:
+        'Painel analítico de logística que navega 10.000 remessas sem congelar o DOM',
+      intro:
+        'Dashboard B2B analítico de logística projetado para suportar altos volumes de dados com máxima performance, usando o que existe de mais atual no ecossistema React: React 19, Vite, TanStack Query e TanStack Virtual. A tela reúne KPIs de remessas, gráficos por status e uma tabela de 10.000 registros com busca, filtro, ordenação server-side e paginação.',
+      facts: [
+        { label: 'Meu papel', value: 'Arquitetura e desenvolvimento front-end' },
+        {
+          label: 'Entrega',
+          value: 'Dashboard analítico, tabela virtualizada, filtros na URL',
+        },
+        {
+          label: 'Stack',
+          value:
+            'React 19, TypeScript, Vite, TanStack Query, TanStack Virtual, React Router 7, Recharts, Tailwind CSS 4',
+        },
+        { label: 'Período', value: '2026 · projeto próprio' },
+      ],
+      problem: {
+        title: 'O problema',
+        description:
+          'Sistemas B2B e aplicações corporativas lidam com volumes massivos de informação em tabelas de dados. O desafio não é só carregar esses dados, é entregá-los sem degradar a experiência.',
+        points: [
+          'Performance da UI: renderizar milhares de registros sem congelar o DOM.',
+          'Compartilhamento de estado: filtros e paginação precisam refletir na URL para que gestores troquem links entre si.',
+          'Gestão de cache: evitar fetches desnecessários ao servidor sem lotar o código de useEffect e useState.',
+        ],
+      },
+      decisions: [
+        {
+          choice: 'Vite (SPA) em vez de Next.js (SSR/SSG)',
+          why: 'Em dashboards autenticados não existe necessidade de SEO. Um SPA entrega navegação muito veloz e transições de página sem ida ao servidor.',
+          pros: [
+            'Bundle menor e inicialização do projeto muito rápida',
+            'Sem custo de infraestrutura Node.js: dá para hospedar como estático',
+          ],
+          cons: [
+            'Time to Interactive pode subir se o bundle crescer demais',
+            'Fica de fora o ganho dos Server Components',
+          ],
+        },
+        {
+          choice: 'TanStack Query em vez de Redux ou Zustand',
+          why: 'Boa parte do que chamávamos de estado global era, na verdade, estado assíncrono do servidor. Redux e Zustand resolvem bem estado de cliente (tema, modais), mas exigem muito boilerplate para dados de API.',
+          pros: [
+            'Cache automático por queryKey e refetch inteligente em foco e reconexão',
+            'Estados de isLoading e isFetching prontos, sem controle manual',
+          ],
+          cons: [
+            'Curva de aprendizado no começo para entender stale time e invalidação de cache',
+          ],
+        },
+        {
+          choice: 'TanStack Virtual para virtualizar a tabela',
+          why: 'A listagem carrega centenas de nós na mesma página, com pacotes de até 500 linhas. DOM inflado deixa o paint da tela lento.',
+          pros: [
+            'Renderiza apenas o que está em tela mais uma margem de overscan',
+            'Uso de memória constante, seja com 100 ou 100.000 registros',
+          ],
+          cons: [
+            'Quebra o Ctrl+F nativo do navegador, o que torna a busca local e remota essencial',
+          ],
+        },
+      ],
+      challenges: [
+        {
+          title: 'Sincronizar estado assíncrono com a URL',
+          challenge:
+            'Controlar a tabela com useState não permitia salvar o link: ao recarregar, o usuário voltava para a página 1.',
+          solution:
+            'Adotei o useSearchParams do react-router-dom como única fonte de verdade. Os filtros passaram a ler e escrever na URL, a tabela reage à mudança de rota naturalmente e os links podem ser favoritados ou enviados para outros setores.',
+        },
+        {
+          title: 'Sobrecarga de renderização no filtro de texto',
+          challenge:
+            'Cada tecla no input de busca alterava a URL e disparava um refetch imediato, encavalando requisições.',
+          solution:
+            'Implementei debounce: um estado local no input aplica o valor aos query params depois de 500ms de inatividade, disparando só a requisição final. Menos tráfego de rede e resposta de UI muito melhor.',
+        },
+        {
+          title: 'Ordenação dinâmica server-side',
+          challenge:
+            'Ordenar no client-side reordenaria apenas a página atual, não o conjunto inteiro de registros.',
+          solution:
+            'O DataTable injeta sortField e sortOrder na URL a partir do clique no header. A API ordena o conjunto completo antes de paginar, então o maior valor exibido é o maior de toda a base, não o da página 1. O cache do React Query trata essas novas chaves sozinho.',
+        },
+      ],
+      metrics: {
+        title: 'Metas de performance',
+        note: 'Benchmarks alvo do projeto, usados para validar as técnicas aplicadas.',
+        items: [
+          {
+            label: 'Lighthouse · Performance',
+            value: '98+',
+            detail: 'Code splitting do Vite e DOM enxuto por virtualização',
+          },
+          {
+            label: 'Lighthouse · Acessibilidade',
+            value: '100',
+            detail: 'Semântica e navegação por teclado na tabela',
+          },
+          {
+            label: 'Lighthouse · Best Practices',
+            value: '100',
+            detail: 'Sem erros de console e dependências atualizadas',
+          },
+          {
+            label: 'Registros na tabela',
+            value: '10.000',
+            detail: 'Memória constante independente do volume',
+          },
+        ],
+      },
+    },
+  },
   {
     slug: 'quiz-estilo-de-apego',
     name: 'Quiz de Estilo de Apego',

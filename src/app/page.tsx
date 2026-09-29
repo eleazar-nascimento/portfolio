@@ -1,18 +1,15 @@
 import { Image } from '@nextui-org/react'
-import { Lock } from 'lucide-react'
+import { ArrowRight, Lock } from 'lucide-react'
+import { Link } from 'next-view-transitions'
 import { profile, projects, socials, type Project } from './data/profile'
 
 function ProjectCard({ project }: { project: Project }) {
-  const href = project.demo || project.repo || '#'
   const isLocked = !project.demo && !project.repo
+  const hasCaseStudy = Boolean(project.caseStudy)
+  const cardClassName = 'group flex flex-col gap-4'
 
-  return (
-    <a
-      href={href}
-      target="_blank"
-      rel="noopener noreferrer"
-      className="group flex flex-col gap-4"
-    >
+  const content = (
+    <>
       <div className="relative aspect-[4/3] overflow-hidden rounded-2xl bg-zinc-100 dark:bg-zinc-800/60">
         <Image
           alt={`Captura de tela do projeto ${project.name}`}
@@ -25,6 +22,11 @@ function ProjectCard({ project }: { project: Project }) {
         {isLocked && (
           <span className="absolute right-4 top-4 flex h-9 w-9 items-center justify-center rounded-full bg-zinc-900/80">
             <Lock size={14} className="text-white" />
+          </span>
+        )}
+        {hasCaseStudy && (
+          <span className="absolute left-4 top-4 rounded-full bg-zinc-900/80 px-3 py-1 text-xs font-semibold text-white">
+            Estudo de caso
           </span>
         )}
       </div>
@@ -40,7 +42,37 @@ function ProjectCard({ project }: { project: Project }) {
         <p className="text-sm leading-relaxed text-zinc-500 dark:text-zinc-400">
           {project.tagline}
         </p>
+        {hasCaseStudy && (
+          <span className="mt-1 inline-flex items-center gap-1.5 text-sm font-semibold text-green-600 dark:text-green-400">
+            Ler o estudo de caso
+            <ArrowRight
+              size={14}
+              aria-hidden="true"
+              className="transition-transform group-hover:translate-x-1"
+            />
+          </span>
+        )}
       </div>
+    </>
+  )
+
+  // Com estudo de caso o card abre a página interna; sem, vai direto para o link externo
+  if (hasCaseStudy) {
+    return (
+      <Link href={`/work/${project.slug}`} className={cardClassName}>
+        {content}
+      </Link>
+    )
+  }
+
+  return (
+    <a
+      href={project.demo || project.repo || '#'}
+      target="_blank"
+      rel="noopener noreferrer"
+      className={cardClassName}
+    >
+      {content}
     </a>
   )
 }

@@ -13,6 +13,13 @@ const navLinks = [
   { label: 'Resume', href: '/resume' },
 ]
 
+/** "Work" também fica ativo nas páginas de estudo de caso (/work/<slug>) */
+function isLinkActive(href: string, pathname: string) {
+  if (href === '/') return pathname === '/' || pathname.startsWith('/work')
+
+  return pathname.startsWith(href)
+}
+
 export function NavbarHeader() {
   const pathname = usePathname()
   const [mobileOpen, setMobileOpen] = useState(false)
@@ -31,10 +38,7 @@ export function NavbarHeader() {
         {/* Links desktop */}
         <div className="hidden items-center gap-8 sm:flex">
           {navLinks.map((link) => {
-            const isActive =
-              link.href === '/'
-                ? pathname === '/'
-                : pathname.startsWith(link.href)
+            const isActive = isLinkActive(link.href, pathname)
 
             return (
               <Link
@@ -84,7 +88,7 @@ export function NavbarHeader() {
               href={link.href}
               onClick={() => setMobileOpen(false)}
               className={`text-base font-medium ${
-                (link.href === '/' ? pathname === '/' : pathname.startsWith(link.href))
+                isLinkActive(link.href, pathname)
                   ? 'text-zinc-900 dark:text-white'
                   : 'text-zinc-500 dark:text-zinc-400'
               }`}
