@@ -1,0 +1,18 @@
+{
+  "verdict": "APPROVED",
+  "findings": [
+    {
+      "severity": "LOW",
+      "title": "Sub-line code-screen scroll",
+      "detail": "The code group wraps on `% LINE_SPACING` (0.12) instead of the full `CODE_SPAN`, so the 'streaming code' is a small oscillating shift that snaps back rather than a continuous scroll. Cosmetic only; well inside the plan's tunable-visual-quality latitude. To get a true stream, wrap on CODE_SPAN with duplicated/tiled lines filling the vacated space.",
+      "file": "src/app/components/HeroScene.tsx"
+    },
+    {
+      "severity": "LOW",
+      "title": "Dead constant CODE_SPAN",
+      "detail": "`CODE_SPAN` is computed but never referenced; it appears to have been intended as the scroll wrap distance. Either use it (see finding above) or remove it. If a strict no-unused-vars lint run flags it, that is the only lint risk.",
+      "file": "src/app/components/HeroScene.tsx"
+    }
+  ],
+  "reviewDoc": "/Volumes/crucial-x9/ideias/portfolio/.agents/tasks/review.md"
+}

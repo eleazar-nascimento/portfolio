@@ -679,6 +679,141 @@ export const projects: Project[] = [
     },
   },
   {
+    slug: 'smart-fit-buscador-de-unidades',
+    name: 'Smart Fit · Buscador de unidades',
+    tagline: 'Busca de academias com filtro de horário resolvido no cliente',
+    description:
+      'Buscador das unidades da rede Smart Fit a partir de um JSON estático com 112 academias: filtro por período do treino (manhã, tarde, noite), opção de exibir unidades fechadas e a infraestrutura de cada unidade (máscara, bebedouro, vestiário) sinalizada por ícones. O trabalho de verdade está nas regras de horário: a API devolve faixas em texto livre, então existe uma camada de parser que transforma essas strings em intervalos comparáveis antes de qualquer filtro rodar.',
+    image: '/images/smart-fit.png',
+    tech: [
+      'Next.js',
+      'TypeScript',
+      'SWR',
+      'Tailwind CSS',
+      'Radix UI',
+      'NextUI',
+      'Framer Motion',
+    ],
+    repo: 'https://github.com/eleazar-nascimento/smart-fit-test',
+    demo: 'https://smart-fit-test.vercel.app',
+    year: '2024',
+    caseStudy: {
+      eyebrow: 'ESTUDO DE CASO',
+      title: 'Smart Fit · Buscador de unidades',
+      subtitle:
+        'Regras de horário em texto livre transformadas em filtro instantâneo',
+      intro:
+        'Projeto nascido de um teste técnico e trazido para o portfólio pelo que ele tem de interessante: não é sobre renderizar um JSON, é sobre modelar regras de negócio de horário que chegam como texto livre e ainda entregar uma interface instantânea e acessível. A tela lista as unidades da rede, filtra por período do treino e por status de funcionamento, e mostra a infraestrutura de cada academia.',
+      facts: [
+        {
+          label: 'Meu papel',
+          value: 'Arquitetura e desenvolvimento front-end, do zero',
+        },
+        {
+          label: 'Entrega',
+          value:
+            'Busca de unidades, filtros cruzados, carrossel de resultados e legenda de infraestrutura',
+        },
+        {
+          label: 'Stack',
+          value:
+            'Next.js 14 (App Router), TypeScript, SWR, Tailwind CSS, Radix UI, NextUI, Framer Motion, Embla Carousel',
+        },
+        { label: 'Período', value: '2024 · origem em teste técnico' },
+      ],
+      problem: {
+        title: 'O problema',
+        description:
+          'A premissa era um buscador de unidades da Smart Fit consumindo uma API estática. O desafio conceitual não era renderizar os dados, era lidar com regras de horário e filtros cruzados no lado do cliente sem perder velocidade nem acessibilidade.',
+        points: [
+          'Os horários chegam como texto livre: "06h às 22h", "06h30 às 08h30", "16h às 00h" e valores que nem são intervalo, como "Fechada".',
+          'Saber se a unidade está aberta depende da hora do cliente, não do servidor.',
+          'Os filtros se cruzam (período do treino somado a exibir ou não unidades fechadas) e precisam responder no clique.',
+        ],
+      },
+      decisions: [
+        {
+          choice: 'Next.js (App Router) em vez de Vite (SPA)',
+          why: 'Mesmo com os filtros vivendo no cliente, os Server Components renderizam a casca da página (header, footer, layout) e melhoram o First Contentful Paint. Só a área interativa, formulário e listagem, entra como "use client".',
+          pros: [
+            'FCP melhor: a estrutura chega pronta do servidor',
+            'Caminho aberto para SEO se a busca virar página pública',
+          ],
+          cons: [
+            'Hospedagem mais complexa que um SPA estático em S3',
+            'Fronteira entre server e client precisa ser desenhada com cuidado',
+          ],
+        },
+        {
+          choice: 'SWR em vez de Redux ou Zustand',
+          why: 'O dado principal é server state: um locations.json externo. Redux traria boilerplate desnecessário e o Zustand resolve bem estado de cliente, não cache de requisição. O SWR entrega cache, loading, erro e stale-while-revalidate de graça.',
+          pros: [
+            'Cache e revalidação nativos, sem useEffect de sincronização',
+            'isLoading e isError prontos, hook de dados em 15 linhas',
+          ],
+          cons: [
+            'O estado de filtro ainda precisa de uma solução própria, resolvida com Context e useMemo',
+          ],
+        },
+        {
+          choice: 'Tailwind com Radix UI e NextUI',
+          why: 'O Tailwind mata o CSS global não intencional e acelera a prototipação, mas componente acessível na mão é lento de fazer. Os primitivos baseados em Radix entregam a semântica WAI-ARIA de saída, e o Framer Motion suaviza as interações.',
+          pros: [
+            'Acessibilidade de teclado e ARIA no radio group sem escrever do zero',
+            'Estilo isolado por componente, sem vazamento de CSS',
+          ],
+          cons: [
+            'Três dependências de UI no mesmo projeto aumentam o bundle e a superfície de manutenção',
+          ],
+        },
+      ],
+      challenges: [
+        {
+          title: 'Parse de horários que chegam como texto livre',
+          challenge:
+            'A API devolve o horário como string: "06h às 22h", "06h30 às 08h30", "16h às 00h" e, no meio disso, valores que não são intervalo nenhum, como "Fechada" ou avisos de limpeza. Comparar isso com o período escolhido pelo usuário exigia normalizar tudo primeiro.',
+          solution:
+            'Isolei um parser que converte a string em minutos desde a meia-noite e devolve null quando o texto não é um intervalo válido, então o dado sujo nunca chega na regra de filtro. O caso de "16h às 00h" virou regra explícita: fim menor ou igual ao início significa que a unidade fecha à meia-noite. Com os dois lados em minutos, saber se a unidade atende ao período é uma checagem de interseção de intervalos.',
+        },
+        {
+          title: 'Filtros cruzados sem recalcular a lista a cada render',
+          challenge:
+            'Cada clique no radio de período ou no checkbox de unidades fechadas disparava o recálculo da lista inteira, com o risco de travar a interface conforme os filtros se acumulam.',
+          solution:
+            'A filtragem virou uma função pura, fora do componente, e a lista exibida ficou memoizada com useMemo, dependendo só das unidades e dos filtros ativos. O valor do Context também é memoizado, então re-render de um filho não propaga trabalho para os outros. Na prática, a resposta ao clique é instantânea.',
+        },
+        {
+          title: 'Hydration mismatch na verificação de hora local',
+          challenge:
+            'O App Router renderiza o HTML no servidor primeiro. Qualquer coisa baseada em new Date().getHours() no primeiro render quebra quando o fuso da máquina do cliente difere do servidor, e o React acusa hydration mismatch.',
+          solution:
+            'Tudo que depende da hora local do usuário passou a rodar estritamente depois da hidratação completa no cliente, o que normaliza a experiência entre dispositivos e horários e elimina a divergência entre o HTML do servidor e o primeiro render do navegador.',
+        },
+      ],
+      metrics: {
+        title: 'Metas de qualidade',
+        note: 'Alvos que guiaram as decisões técnicas do projeto.',
+        items: [
+          {
+            label: 'Lighthouse · Performance',
+            value: '90+',
+            detail: 'next/font elimina layout shift nos Core Web Vitals',
+          },
+          {
+            label: 'Unidades processadas',
+            value: '112',
+            detail: 'Filtro cruzado resolvido no cliente, sem ida ao servidor',
+          },
+          {
+            label: 'Regra de negócio isolada',
+            value: '100%',
+            detail: 'Parser e filtro são funções puras, fora dos componentes',
+          },
+        ],
+      },
+    },
+  },
+  {
     slug: 'quiz-estilo-de-apego',
     name: 'Quiz de Estilo de Apego',
     tagline: 'Questionário que revela como você se conecta nos relacionamentos',
