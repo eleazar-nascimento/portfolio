@@ -825,6 +825,126 @@ export const projects: Project[] = [
     demo: 'https://quiz-app-chi-drab-27.vercel.app',
     featured: true,
     year: '2025',
+    caseStudy: {
+      eyebrow: 'ESTUDO DE CASO',
+      title: 'Quiz de Estilo de Apego',
+      subtitle:
+        'Motor de pontuação multidimensional e internacionalização sem dependências',
+      intro:
+        'Questionário psicológico interativo baseado na Teoria do Apego de John Bowlby e Mary Ainsworth para identificar o perfil relacional do usuário entre quatro dimensões: seguro, ansioso, evitativo e desorganizado. Mais do que desenhar telas de perguntas, o foco do projeto foi desacoplar o motor de pontuação ponderada, a máquina de estados e a internacionalização em hooks puros, mantendo os componentes visuais enxutos e previsíveis.',
+      facts: [
+        {
+          label: 'Meu papel',
+          value: 'Arquitetura, design de interface e desenvolvimento front-end',
+        },
+        {
+          label: 'Entrega',
+          value:
+            'Fluxo completo do quiz, motor de pontuação ponderada, i18n (pt-BR/en-US) e diagnóstico',
+        },
+        {
+          label: 'Stack',
+          value:
+            'React 19, TypeScript, Vite, Tailwind CSS 4, Lucide Icons, Custom Hooks',
+        },
+        { label: 'Período', value: '2025 · projeto próprio' },
+      ],
+      problem: {
+        title: 'O problema',
+        description:
+          'A premissa era construir uma jornada guiada de autoconhecimento com feedback visual de progresso e resultado detalhado. O desafio técnico não estava em exibir perguntas na tela, mas em modelar a pontuação psicológica e controlar transições animadas sem acoplar regra de negócio ao JSX.',
+        points: [
+          'Uma resposta não é binária ("certo ou errado"): a mesma escolha pode somar peso primário em um estilo de apego e peso secundário em outro.',
+          'Trocas de pergunta animadas abrem brecha para cliques duplos de usuários rápidos, o que pode pular etapas ou corromper o cálculo final.',
+          'A interface precisava adaptar o idioma automaticamente ao navegador (pt-BR ou en-US) sem inflar o bundle com bibliotecas pesadas de i18n.',
+        ],
+      },
+      decisions: [
+        {
+          choice: 'Vite (SPA) em vez de Next.js (SSR/SSG)',
+          why: 'Um quiz interativo acontece inteiro no cliente, em transições instantâneas entre boas-vindas, perguntas e diagnóstico. O Vite entrega um bundle leve, HMR imediato e nenhuma sobrecarga de hidratação.',
+          pros: [
+            'Latência zero entre etapas do questionário, tudo roda em memória',
+            'Deploy estático simples em CDN/Vercel, sem custo de servidor',
+          ],
+          cons: [
+            'Abre mão de Server Components e geração de páginas dinâmicas no servidor',
+            'Exige cuidado com o tamanho do bundle conforme os dicionários de idioma crescem',
+          ],
+        },
+        {
+          choice: 'Custom Hooks especializados em vez de Redux ou Zustand',
+          why: 'Colocar um gerenciador de estado global no fluxo linear de um quiz seria overengineering. Separei as responsabilidades em três hooks dedicados: useQuizLogic (máquina de estados e cálculo), useQuizData (perguntas, pesos e perfis) e useLocalization (idioma).',
+          pros: [
+            'Componentes visuais recebem apenas dados prontos e callbacks, sem regra espalhada',
+            'Fácil testar e calibrar pesos das respostas sem tocar na interface',
+          ],
+          cons: [
+            'Se o estado precisasse ser compartilhado entre rotas distantes, exigiria elevar para Context ou store',
+          ],
+        },
+        {
+          choice: 'Tailwind CSS 4 e Glassmorphism em componentes próprios',
+          why: 'Um produto voltado a psicologia e autoconhecimento pede uma estética acolhedora. Com o Tailwind v4 construí os primitivos visuais (ActionButton, OptionButton e ProgressBar) com backdrop-blur, gradientes translúcidos e micro-interações sem sair do CSS utilitário.',
+          pros: [
+            'CSS final mínimo e design consistente entre boas-vindas, perguntas e resultado',
+            'Controle total das animações de transição sem depender de biblioteca de UI externa',
+          ],
+          cons: [
+            'Efeitos de backdrop-blur exigem parcimônia para não pesar em aparelhos móveis mais simples',
+          ],
+        },
+      ],
+      challenges: [
+        {
+          title: 'Motor de pontuação multidimensional ponderado',
+          challenge:
+            'Em um teste baseado na Teoria do Apego, uma única resposta comportamental pode refletir traços de mais de um perfil ao mesmo tempo (por exemplo, 3 pontos em evitativo e 2 em desorganizado). Um contador simples por opção não daria conta dessa nuance.',
+          solution:
+            'Modelei cada alternativa com um vetor de pesos para as quatro dimensões ({ secure, anxious, avoidant, fearful }). Ao final do fluxo, o useQuizLogic reduz a matriz de respostas acumulando os pesos de cada eixo e resolve o perfil dominante de forma determinística em uma única passagem O(N), permitindo ajustar a calibragem do teste só nos dados.',
+        },
+        {
+          title: 'Internacionalização (i18n) zero-dependency com fallback',
+          challenge:
+            'Bibliotecas completas de internacionalização adicionam um peso desproporcional ao pacote final quando a aplicação só precisa detectar o idioma do navegador e traduzir chaves diretas entre português e inglês.',
+          solution:
+            'Construí o hook useLocalization lendo navigator.languages do navegador: ele tenta o match exato (como pt-BR), cai para o prefixo da língua (como en-GB para en-US) e mantém fallback seguro para pt-BR se alguma chave faltar. O resultado é suporte bilíngue instantâneo com zero kilobytes de dependências externas.',
+        },
+        {
+          title: 'Sincronização de transições e bloqueio de clique duplo',
+          challenge:
+            'Entre uma pergunta e outra existe uma transição visual de saída e entrada de 300ms. Durante essa janela, cliques repetidos na mesma opção avançavam o índice mais de uma vez e distorciam a pontuação.',
+          solution:
+            'Acoplei uma trava reativa (isAnimating) ao ciclo de transição dentro do useQuizLogic. Assim que a resposta é registrada, os botões de opção ficam desabilitados até a animação de scale e opacidade terminar e a próxima pergunta estar pronta em tela.',
+        },
+      ],
+      metrics: {
+        title: 'Metas de qualidade',
+        note: 'Alvos que guiaram as decisões técnicas do projeto.',
+        items: [
+          {
+            label: 'Lighthouse · Performance',
+            value: '90+',
+            detail: 'Bundle enxuto no Vite e zero bloqueio de renderização',
+          },
+          {
+            label: 'Dependências de i18n',
+            value: '0 KB',
+            detail: 'Detecção de idioma e fallback escritos com API nativa',
+          },
+          {
+            label: 'Dimensões avaliadas',
+            value: '4',
+            detail: 'Pesos combinados entre seguro, ansioso, evitativo e desorganizado',
+          },
+          {
+            label: 'Regra de negócio isolada',
+            value: '100%',
+            detail: 'Estado, dados e tradução separados em 3 hooks fora do JSX',
+          },
+        ],
+      },
+    },
   },
   {
     slug: 'moveit',
@@ -837,6 +957,126 @@ export const projects: Project[] = [
     repo: 'https://github.com/eleazar-nascimento/moveit-next',
     demo: 'https://moveit-next-two-amber.vercel.app',
     year: '2021',
+    caseStudy: {
+      eyebrow: 'ESTUDO DE CASO',
+      title: 'move.it · Pomodoro gamificado',
+      subtitle:
+        'Ciclos de foco com progressão de RPG, contextos isolados e sessão hidratada no servidor',
+      intro:
+        'Aplicação web que une a técnica Pomodoro a mecânicas de gamificação de RPG para combater o sedentarismo e a fadiga visual de quem trabalha horas em frente ao computador. A cada ciclo concluído, o usuário desbloqueia um exercício curto para o corpo ou para os olhos, acumula pontos de experiência (XP) em uma curva de progressão quadrática e sobe de nível com o progresso persistido via SSR.',
+      facts: [
+        {
+          label: 'Meu papel',
+          value: 'Arquitetura e desenvolvimento front-end',
+        },
+        {
+          label: 'Entrega',
+          value:
+            'Cronômetro Pomodoro, motor de XP e níveis, notificações nativas e persistência SSR',
+        },
+        {
+          label: 'Stack',
+          value:
+            'Next.js (Pages Router / SSR), React, TypeScript, Context API, js-cookie, CSS Modules',
+        },
+        { label: 'Período', value: '2021 · evolução da NLW Rocketseat' },
+      ],
+      problem: {
+        title: 'O problema',
+        description:
+          'Cronômetros Pomodoro tradicionais avisam quando o tempo de foco termina, mas não dizem o que fazer na pausa nem criam recompensa imediata pelo cuidado ergonômico. Do lado técnico, transformar esse ciclo em um jogo no navegador traz desafios claros de estado e renderização.',
+        points: [
+          'Persistir nível e XP sem causar flash de conteúdo desatualizado (Nível 1 / 0 XP) durante o carregamento inicial da página.',
+          'Atualizar o cronômetro a cada segundo sem forçar a re-renderização do perfil, da barra de experiência e do card de desafios.',
+          'Avisar o usuário que o ciclo acabou mesmo quando ele está focado em outra aba ou janela do sistema operacional.',
+        ],
+      },
+      decisions: [
+        {
+          choice: 'Cookies HTTP + Next.js SSR em vez de localStorage',
+          why: 'Se o progresso ficasse no localStorage, o servidor Next.js não teria acesso aos dados na primeira resposta e renderizaria a tela zerada até a hidratação no cliente. Com js-cookie e getServerSideProps, o HTML já chega do servidor no nível e XP reais do usuário.',
+          pros: [
+            'Zero layout shift ou flash de estado inicial desatualizado ao abrir o app',
+            'Sincronia imediata entre o que o servidor renderiza e o que o cliente hidrata',
+          ],
+          cons: [
+            'Exige SSR a cada requisição da página em vez de geração 100% estática',
+            'Limite de tamanho dos cookies (4 KB), suficiente apenas para metadados leves de progresso',
+          ],
+        },
+        {
+          choice: 'Dois Contexts separados em vez de um estado global único',
+          why: 'O cronômetro muda de estado a cada 1 segundo. Se o tempo vivesse no mesmo Context que o perfil e a barra de XP, a árvore inteira re-renderizaria a cada tick. Dividi o estado em ChallengesContext (gamificação) e CountdownContext (tempo).',
+          pros: [
+            'Apenas o visor do cronômetro e o botão de controle re-renderizam a cada segundo',
+            'Separação limpa entre o domínio de gamificação e o domínio de contagem regressiva',
+          ],
+          cons: [
+            'Exige orquestrar a comunicação entre os dois contextos quando o tempo chega a zero',
+          ],
+        },
+        {
+          choice: 'CSS Modules com escala fluida em rem',
+          why: 'Para manter o bundle enxuto e sem dependências de runtime CSS-in-JS, adotei CSS Modules nativo do Next.js combinado a variáveis CSS globais e tipografia responsiva (16px no desktop, 15px em tablets e 14px no mobile).',
+          pros: [
+            'Escopo de classes garantido em build time sem custo de JavaScript no cliente',
+            'Toda a interface escala proporcionalmente apenas ajustando o font-size raiz por media query',
+          ],
+          cons: [
+            'Estados visuais dinâmicos exigem composição manual de classes nos componentes',
+          ],
+        },
+      ],
+      challenges: [
+        {
+          title: 'Curva de progressão quadrática e carry-over de XP',
+          challenge:
+            'Em um sistema de níveis, subir de level não pode ter custo fixo nem desperdiçar o excedente de pontos quando um desafio entrega mais XP do que faltava para fechar a barra.',
+          solution:
+            'Modelei a meta de cada nível com uma função quadrática inspirada em RPGs, onde o próximo nível exige ((level + 1) * 4)² de XP (64 xp no nível 1, 144 xp no nível 2, e assim por diante). Quando o desafio concluído ultrapassa a meta, o completeChallenge subtrai o teto do nível atual, preserva a sobra (carry-over) para o novo nível e dispara o modal de conquista.',
+        },
+        {
+          title: 'Notificação multimodal em segundo plano (Web Notifications + Áudio)',
+          challenge:
+            'Durante um bloco de foco, o desenvolvedor está no editor de código ou em outra aba do navegador; uma mudança apenas visual na página passaria despercebida ao fim do ciclo.',
+          solution:
+            'Solicitei permissão na Web Notification API logo na montagem do contexto e combinei dois canais de saída quando o contador chega a zero: o disparo sonoro via HTMLAudioElement (/notification.mp3) e a notificação nativa do sistema operacional informando o valor em XP do desafio sorteado.',
+        },
+        {
+          title: 'Cancelamento limpo do timer ao abandonar ciclo',
+          challenge:
+            'O decremento do relógio usa setTimeout encadeado no useEffect. Quando o usuário clicava em "Abandonar ciclo", o timeout agendado para o segundo seguinte continuava vivo e ainda descontava mais 1 segundo ou disparava efeitos colaterais.',
+          solution:
+            'Armazenei a referência do timer ativo em uma variável de controle (countdownTimeout) e chamei clearTimeout imediatamente na ação de reset, restaurando o estado inicial sem vazamento de execução assíncrona.',
+        },
+      ],
+      metrics: {
+        title: 'Metas de qualidade',
+        note: 'Números e garantias técnicas da implementação.',
+        items: [
+          {
+            label: 'Flash de hidratação',
+            value: '0',
+            detail: 'Nível, XP e desafios lidos nos cookies via getServerSideProps',
+          },
+          {
+            label: 'Catálogo ergonômico',
+            value: '12',
+            detail: '9 exercícios corporais e 3 visuais com recompensas de 50 a 140 XP',
+          },
+          {
+            label: 'Contextos isolados',
+            value: '2',
+            detail: 'Tick de 1s do relógio isolado da barra de XP e do perfil',
+          },
+          {
+            label: 'Curva de evolução',
+            value: '((L+1)×4)²',
+            detail: 'Progressão quadrática de RPG com carry-over de experiência',
+          },
+        ],
+      },
+    },
   },
 ]
 
