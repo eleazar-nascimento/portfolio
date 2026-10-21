@@ -1,7 +1,8 @@
 import { Image } from '@nextui-org/react'
 import { ArrowRight, Lock } from 'lucide-react'
 import { Link } from 'next-view-transitions'
-import { profile, projects, socials, type Project } from './data/profile'
+import { projects, socials, type Project } from './data/profile'
+import HeroScene from './components/HeroScene'
 
 function ProjectCard({ project }: { project: Project }) {
   const isLocked = !project.demo && !project.repo
@@ -134,14 +135,7 @@ export default function WorkPage() {
           </div>
 
           <div className="shrink-0">
-            <Image
-              alt={`Foto de ${profile.name}`}
-              className="rounded-3xl object-cover"
-              height={340}
-              src={profile.photo}
-              width={340}
-              isBlurred
-            />
+            <HeroScene />
           </div>
         </div>
       </section>
