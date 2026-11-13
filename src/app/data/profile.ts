@@ -718,6 +718,171 @@ export const projects: Project[] = [
     },
   },
   {
+    slug: 'nomad-log',
+    name: 'NomadLog · Diário de Bordo & Gastos Offline',
+    tagline: 'Copiloto 100% offline para mochileiros: roteiro, câmbio multimoedas e altimetria',
+    description:
+      'Aplicação multiplataforma (iOS, Android e Web) construída com React Native 0.88, Expo SDK 58, Expo Router, Zustand e Reanimated 4 para viajantes em destinos remotos ou sem roaming internacional. Reúne roteiro flexível conectado às despesas, conversor multimoedas com snapshot congelado, mapa vetorial 2D com perfil altimétrico em SVG, checklist de mochila com balança em kg e fila de mutações offline. Acompanha Landing Page bilíngue com simulador de câmbio e preview interativo.',
+    image: '/images/nomad-log.png',
+    tech: [
+      'React Native',
+      'Expo',
+      'TypeScript',
+      'Zustand',
+      'NativeWind',
+      'Reanimated',
+      'SVG',
+    ],
+    repo: 'https://github.com/eleazar-nascimento/nomad-log',
+    demo: 'https://nomad-log-lp.vercel.app',
+    featured: true,
+    year: '2026',
+    caseStudy: {
+      eyebrow: 'ESTUDO DE CASO · MOBILE & WEB LP',
+      title: 'NomadLog · Diário de Bordo & Despesas Offline',
+      subtitle:
+        'Roteiro dinâmico, câmbio multimoedas em 0ms, mapa vetorial com altimetria e fila de sincronização offline',
+      intro:
+        'Aplicativo multiplataforma (iOS, Android e Web) desenvolvido com React Native 0.88, Expo SDK 58, Expo Router, NativeWind v4, Zustand e Reanimated 4 sob uma premissa inegociável: a internet é um aprimoramento passageiro, nunca um pré-requisito. Criado para mochileiros, trilheiros e nômades digitais que cruzam fronteiras em modo avião ou sem sinal, o NomadLog unifica itinerário dia a dia, controle financeiro multimoedas, mapa topográfico em SVG, diário de memórias e balança de bagagem em uma única experiência a 60fps.',
+      facts: [
+        {
+          label: 'Meu papel',
+          value: 'Produto, arquitetura Offline-First, Design System Dark e Landing Page',
+        },
+        {
+          label: 'Entrega',
+          value:
+            'App multiplataforma (iOS/Android/Web), motor de câmbio offline, mapa vetorial SVG, hub de exportação (CSV/JSON/MD) e LP bilíngue',
+        },
+        {
+          label: 'Stack',
+          value:
+            'React Native 0.88, Expo SDK 58, Expo Router, Zustand 5, NativeWind v4, Reanimated 4.7, React Native SVG, AsyncStorage',
+        },
+        { label: 'Período', value: '2026 · produto autoral' },
+      ],
+      problem: {
+        title: 'O problema',
+        description:
+          'Aplicativos tradicionais de viagem (como Wanderlog, Polarsteps e TravelSpend) funcionam bem no Wi-Fi de casa, mas falham ou cobram caro quando o viajante está no meio de uma trilha na montanha, em um trem noturno ou economizando roaming internacional. Além disso, obrigam a pessoa a alternar entre 3 ou 4 apps desconectados.',
+        points: [
+          'Falta de sinal e custo de roaming: em travessias remotas ou feiras de rua no exterior, consultar cotação online ou carregar tiles pesados do Google Maps simplesmente trava a tela.',
+          'Desconexão entre roteiro e orçamento: quem planeja um passeio em Baht tailandês ou Dong vietnamita não consegue vincular o custo previsto da parada ao gasto real convertido para Reais.',
+          'Performance em múltiplos domínios: atualizar itens da mochila, lançar despesas ou animar contadores não pode disparar re-renderizações em cascata nem drenar a bateria do aparelho.',
+        ],
+      },
+      decisions: [
+        {
+          choice: 'Zustand com seletores atômicos e Fila de Mutações em vez de React Context',
+          why: 'O app gerencia 5 entidades interligadas (Trip, Waypoint, Expense, JournalEntry e PackingItem) mais a fila de sincronização. No React Context, marcar um item na mochila re-renderizaria o mapa e o extrato financeiro; com Zustand, cada componente assina apenas sua fatia de estado e serviços em background leem a fila via getState().',
+          pros: [
+            'Zero re-renderização cruzada entre abas, mantendo animações a 60fps em aparelhos intermediários',
+            'Trilha de auditoria baseada em Event Sourcing (MutationItem) pronta para reconciliação em lote quando houver Wi-Fi',
+          ],
+          cons: [
+            'Exige disciplina na modelagem de chaves estrangeiras (como linkedExpenseId entre parada e despesa) no estado normalizado',
+          ],
+        },
+        {
+          choice: 'Mapa vetorial 2D e perfil altimétrico em SVG em vez de Google Maps / Mapbox',
+          why: 'SDKs de mapas tradicionais dependem de tiles online, pesam no bundle e drenam bateria com GPS contínuo. Construí um motor gráfico próprio com react-native-svg usando curvas de Bézier para a rota e gráfico de área para a altimetria das trilhas.',
+          pros: [
+            'Renderização instantânea 100% offline com cálculo de pico de altitude, distância acumulada e status por parada',
+            'Modo duplo interativo que alterna com 1 toque entre o traçado da rota e o perfil topográfico de elevação em metros',
+          ],
+          cons: [
+            'Não substitui navegação curva a curva de trânsito urbano, focando na visualização de trechos, waypoints e relevo',
+          ],
+        },
+        {
+          choice: 'NativeWind v4 + Reanimated 4 próprios em vez de bibliotecas fechadas (Gluestack)',
+          why: 'Bibliotecas de UI pesadas trazem sobrecarga de runtime e atritos com React 19 e Expo SDK 58. Desenhei um Design System Dark Slate (#0F121A) de alto contraste com tokens semânticos (Laranja Aventura, Âmbar Moeda, Azul Bússola e Verde Trilha) e animações na UI thread.',
+          pros: [
+            'Zero overhead de pacotes externos de estilo e adaptação exata à Dynamic Island do iPhone via useSafeAreaInsets',
+            'Micro-interações fluidas: entrada em cascata (FadeInDown spring), contadores interpolados (AnimatedNumber) e anel circular da mochila',
+          ],
+          cons: [
+            'Todos os primitivos visuais (cards, modais, barras de progresso e moldura web DeviceFrame) foram construídos sob medida',
+          ],
+        },
+      ],
+      challenges: [
+        {
+          title: 'Motor de câmbio multimoedas Stale-While-Revalidate com pivô em USD',
+          challenge:
+            'Em uma viagem por múltiplos países (como Tailândia, Vietnã e Europa), o viajante paga em moedas locais de naturezas muito diferentes — incluindo moedas de alta denominação sem centavos, como VND e CLP — e precisa saber o valor em BRL em milissegundos, mesmo em modo avião.',
+          solution:
+            'Modelei um motor bidirecional que usa o USD como pivô universal sobre um snapshot local de taxas. Quando há conexão, o serviço fxApi atualiza o snapshot com timeout proativo de 4 segundos via AbortController (para que redes lentas de hostel nunca travem a UI); sem sinal, opera sobre o último snapshot congelado e formata automaticamente casas decimais conforme a moeda.',
+        },
+        {
+          title: 'Ponte entre Roteiro e Finanças (Previsão vs. Realidade em 1 toque)',
+          challenge:
+            'Nos planejadores comuns, o itinerário e a planilha de gastos são mundos separados: o viajante prevê gastar 300 Baht em um parque nacional, mas depois precisa redigitar tudo na aba financeira, perdendo a comparação entre o planejado e o executado.',
+          solution:
+            'Criei um vínculo relacional 1:1 (linkedExpenseId) entre Waypoint e Expense. Cada parada do roteiro aceita custo estimado e exibe o botão "+ Lançar Gasto", que abre o modal financeiro já preenchido e alimenta o termômetro diário de Previsto vs. Realizado, além de permitir mover paradas entre dias ou ajustar horários (-30m / +30m) com 1 toque.',
+        },
+        {
+          title: 'Soberania de dados e Hub de Exportação (CSV UTF-8 BOM, JSON e Markdown)',
+          challenge:
+            'Muitos apps prendem os dados do usuário na nuvem ou cobram assinatura cara para exportar uma planilha de rateio ao fim da viagem.',
+          solution:
+            'Implementei na central de configurações um gerador local que exporta toda a viagem em três formatos sem depender de servidor: planilha CSV com cabeçalho UTF-8 BOM (para abrir com acentuação perfeita no Excel e Google Sheets), backup estruturado completo em JSON e relatório narrativo em Markdown pronto para compartilhar.',
+        },
+      ],
+      landingPage: {
+        title: 'Landing Page Bilíngue & Preview Interativo',
+        subtitle:
+          'Construída em React 19, TypeScript e Tailwind CSS com internacionalização PT/EN e testes de acessibilidade',
+        url: 'https://nomad-log-lp.vercel.app',
+        description:
+          'Para posicionar o NomadLog frente a concorrentes globais como Wanderlog e Polarsteps, desenvolvi uma Landing Page de alta conversão totalmente bilíngue (pt-BR e en-US) e acessível (navegação por teclado, skip links e regiões ARIA). A página permite experimentar os diferenciais técnicos do app diretamente no navegador.',
+        highlights: [
+          {
+            title: 'Mockup interativo com Altimetria SVG, Painel e Exportação',
+            description:
+              'Simula o app real em três abas interativas: Roteiro & Mapa Vetorial (alternando entre curva de elevação de 1.850m e GPS vetorial), Painel Financeiro + Balança de Bagagem e Central de Exportação com cópia de Markdown e download de CSV/JSON.',
+          },
+          {
+            title: 'Conversor de câmbio offline ao vivo no navegador',
+            description:
+              'Permite digitar valores em Baht (THB), Dong (VND), Euro, Dólar, Iene ou Pesos e visualizar na hora a conversão com taxas congeladas em cache para BRL ou USD conforme o idioma ativo.',
+          },
+          {
+            title: 'Matriz de Benchmark Competitivo (NomadLog vs. Wanderlog vs. Polarsteps)',
+            description:
+              'Tabela responsiva (com visão em cards empilhados no mobile) que contrasta de forma transparente a arquitetura 100% offline gratuita, a ponte Roteiro ⇄ Gastos e a soberania de dados.',
+          },
+        ],
+      },
+      metrics: {
+        title: 'Indicadores de engenharia e produto',
+        note: 'Números da arquitetura Offline-First, motor de câmbio e animações nativas.',
+        items: [
+          {
+            label: 'Dados de roaming gastos',
+            value: '0 KB',
+            detail: '100% funcional em modo avião com fila local de mutações',
+          },
+          {
+            label: 'Conversão multimoedas',
+            value: '0 ms',
+            detail: 'Cálculo bidirecional em memória via snapshot + sync com timeout de 4s',
+          },
+          {
+            label: 'Animações na UI Thread',
+            value: '60 fps',
+            detail: 'Reanimated 4 com física de molas, contadores e anel SVG dinâmico',
+          },
+          {
+            label: 'Soberania de exportação',
+            value: '3 formatos',
+            detail: 'Geração local de CSV (Excel), Backup JSON e Relatório Markdown',
+          },
+        ],
+      },
+    },
+  },
+  {
     slug: 'b2b-logistics-dashboard',
     name: 'Enterprise B2B Logistics Dashboard',
     tagline: 'Painel logístico que navega 10.000 remessas sem travar o DOM',
