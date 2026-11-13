@@ -113,6 +113,17 @@ export type CaseStudy = {
     challenge: string
     solution: string
   }[]
+  /** Seção opcional dedicada à Landing Page e estratégia de produto/conversão */
+  landingPage?: {
+    title: string
+    subtitle: string
+    url: string
+    description: string
+    highlights: {
+      title: string
+      description: string
+    }[]
+  }
   metrics?: {
     /** Título do bloco, ex.: "Metas de performance" */
     title: string
@@ -541,6 +552,171 @@ export const services: Service[] = [
  * }
  */
 export const projects: Project[] = [
+  {
+    slug: 'econo-market',
+    name: 'EconoMarket · Lista & Comparador de Preços',
+    tagline: 'App mobile Offline-First que rastreia inflação doméstica via NFC-e e IA',
+    description:
+      'Aplicativo mobile Offline-First em React Native (Expo SDK 58) e WatermelonDB feito para quem repete as compras do mês: clona cestas anteriores com 1 toque, calcula em tempo real a variação de preço item a item no corredor do mercado e escaneia notas fiscais de forma híbrida — via QR Code da NFC-e direto da SEFAZ ou foto do cupom com OCR multimodal (Gemini Flash Vision). Acompanha Landing Page em React 19 com simulador interativo do carrinho.',
+    image: '/images/econo-market.png',
+    tech: [
+      'React Native',
+      'Expo',
+      'TypeScript',
+      'WatermelonDB',
+      'NativeWind',
+      'Zustand',
+      'Gemini AI',
+    ],
+    repo: 'https://github.com/eleazar-nascimento/econo-market',
+    demo: 'https://econo-market-lp-one.vercel.app',
+    featured: true,
+    year: '2026',
+    caseStudy: {
+      eyebrow: 'ESTUDO DE CASO · MOBILE & WEB LP',
+      title: 'EconoMarket · Lista Inteligente & Comparador de Preços',
+      subtitle:
+        'App mobile Offline-First com WatermelonDB, scanner híbrido NFC-e + IA e Landing Page com simulador ao vivo',
+      intro:
+        'Aplicativo mobile construído com React Native 0.88, Expo SDK 58, Expo Router, NativeWind v4 e WatermelonDB para resolver uma dor real do orçamento familiar: descobrir quais produtos da compra do mês subiram ou caíram de preço antes de chegar ao caixa. Além do app nativo com banco relacional local e scanner híbrido de notas fiscais, o projeto conta com uma Landing Page em React 19 e Vite com um simulador interativo para o visitante testar a dinâmica de preços no próprio navegador.',
+      facts: [
+        {
+          label: 'Meu papel',
+          value: 'Produto, arquitetura mobile Offline-First, Design System e Landing Page',
+        },
+        {
+          label: 'Entrega',
+          value:
+            'App mobile (iOS/Android), scanner NFC-e + OCR IA, dashboard de 6 meses e Landing Page interativa',
+        },
+        {
+          label: 'Stack',
+          value:
+            'React Native 0.88, Expo SDK 58, Expo Router, WatermelonDB, Zustand, NativeWind v4, Reanimated 4, Gemini 2.5 Flash',
+        },
+        { label: 'Período', value: '2026 · produto autoral' },
+      ],
+      problem: {
+        title: 'O problema',
+        description:
+          'Quem faz a compra mensal da casa costuma repetir de 70% a 90% dos itens da cesta básica, mas perde a referência de quanto pagou no mês passado e só descobre a inflação silenciosa quando passa no caixa. Construir um app realmente útil dentro do supermercado exigiu resolver restrições físicas e técnicas importantes.',
+        points: [
+          'Supermercados frequentemente têm sinal de celular ruim ou inexistente nos corredores do fundo, então o app não pode depender de rede para criar listas, marcar itens ou comparar preços.',
+          'Digitar preço por preço de dezenas de produtos é inviável: a entrada de dados precisa ser instantânea via nota fiscal, mas também tolerar cupons térmicos amassados ou feiras sem QR Code.',
+          'O uso acontece com uma mão empurrando o carrinho e a outra segurando o celular sob iluminação fluorescente intensa, exigindo alto contraste e ações concentradas na zona do polegar (Thumb Zone).',
+        ],
+      },
+      decisions: [
+        {
+          choice: 'WatermelonDB (SQLite reativo) em vez de AsyncStorage ou API REST direta',
+          why: 'Listas recorrentes, histórico de compras de 6 meses e cruzamento de preços por produto pedem consultas relacionais rápidas no próprio aparelho. O WatermelonDB roda em thread nativa sobre SQLite, expõe observáveis RxJS para a UI e já traz o protocolo pullChanges/pushChanges pronto para sincronizar com Supabase PostgreSQL.',
+          pros: [
+            'Operação 100% Offline-First com leitura e gravação instantâneas no dispositivo',
+            'Modelagem relacional em 5 tabelas (products, shopping_lists, shopping_list_items, purchases e purchase_items) pronta para sync em nuvem',
+          ],
+          cons: [
+            'Exige configuração nativa e cuidado com compatibilidade do Gradle em versões recentes do Expo SDK',
+          ],
+        },
+        {
+          choice: 'Scanner híbrido: QR Code NFC-e (SEFAZ) + Fallback OCR com Gemini Flash Vision',
+          why: 'Nenhuma tecnologia única cobre 100% das compras. O QR Code da NFC-e entrega precisão contábil absoluta direto da SEFAZ em 1 segundo, enquanto a visão computacional multimodal do Gemini 2.5 Flash resolve cupons rasurados ou recibos de feiras e padarias.',
+          pros: [
+            'Convergência dos dois canais para o mesmo contrato JSON normalizado antes de gravar no banco',
+            'Tela de conferência intermediária garante que nenhum item entre no histórico sem revisão do usuário',
+          ],
+          cons: [
+            'O fallback de IA exige compressão da foto e proxy via Edge Function para proteger a chave e controlar cota por plano',
+          ],
+        },
+        {
+          choice: 'Design System Fresh Market (Light First) e ergonomia Thumb-First',
+          why: 'Telas escuras refletem as lâmpadas tubulares de teto dos supermercados e dificultam a leitura em movimento. Desenhei uma paleta clara em Slate 50 (#F8FAFC) com contraste 14:1, semiótica financeira imediata (Esmeralda para economia, Coral para inflação) e alvos de toque mínimos de 44px.',
+          pros: [
+            'Leitura imediata sob luz forte e operação confortável com apenas uma mão',
+            'Gaveta dinâmica "No Carrinho" com feedback tátil (15ms) mantém no topo apenas o que ainda falta pegar',
+          ],
+          cons: [
+            'Exige disciplina visual para manter densidade de informação (preço atual, preço anterior e variação percentual) sem poluir o card',
+          ],
+        },
+      ],
+      challenges: [
+        {
+          title: 'Normalização de descrições abreviadas de cupons fiscais e cálculo de inflação',
+          challenge:
+            'Cada rede de supermercado imprime abreviações diferentes na nota (como "LT INT PIRACANJUBA 1L" vs "Leite Integral Piracanjuba"), o que quebraria a série histórica do produto e o cálculo de variação mês a mês.',
+          solution:
+            'Estruturei o motor de comparação usando o código de barras EAN/GTIN (<cEAN> da NFC-e) como chave primária de identidade sempre que presente, somado ao mapeamento de nome canônico na tela de conferência. Com o vínculo garantido, o serviço calcula a variação percentual item a item e classifica automaticamente em Promoção (≤ -3%), Estável (entre -3% e +3%) ou Inflação (≥ +3%).',
+        },
+        {
+          title: 'Quebra de compilação Java do WatermelonDB no Gradle 9.4 (Expo SDK 58)',
+          challenge:
+            'No AGP 8+/Gradle 9.4 do Expo SDK 58, a geração automática de BuildConfig em bibliotecas foi desativada por padrão, fazendo o build Android falhar em WMDatabaseDriver.java. Além disso, injetar afterEvaluate no build.gradle falha no Gradle 9.4 porque os subprojetos já estão avaliados.',
+          solution:
+            'Criei uma solução em dupla camada sem tocar no ciclo de avaliação do Gradle: um script de postinstall e um Expo Config Plugin (withWatermelonDBAndroidFix) que aplicam patch determinístico direto nos arquivos Java nativos antes do prebuild, acompanhados de um teste guardrail na pipeline CI (uiIntegrity.test.ts) que impede regressões.',
+        },
+        {
+          title: 'Dashboard analítico de 6 meses e Raio-X por produto sem travar a thread JS',
+          challenge:
+            'A usuária precisava comparar não só o mês atual contra o anterior, mas qualquer par de meses do semestre, visualizar a curva individual de cada item (menor e maior preço pago) e clonar compras antigas com 1 toque.',
+          solution:
+            'Combinei Zustand com seletores derivados para agregar as cestas históricas, alimentando um gráfico de barras tátil de 6 meses, o comparador flexível (Mês A vs Mês B) e o Raio-X por produto. Toda a jornada crítica é validada de ponta a ponta com testes unitários, Playwright e fluxos mobile no Maestro.',
+        },
+      ],
+      landingPage: {
+        title: 'Landing Page & Simulador Interativo ao Vivo',
+        subtitle:
+          'Desenvolvida em React 19, Vite e Tailwind CSS para demonstrar o valor do app antes mesmo do download',
+        url: 'https://econo-market-lp-one.vercel.app',
+        description:
+          'Para apresentar o EconoMarket e validar a proposta de valor na web, construí uma Landing Page dedicada que reproduz a identidade Fresh Market & Smart Saver do aplicativo. Em vez de exibir apenas telas estáticas, a página traz um simulador funcional do carrinho para que qualquer pessoa sinta na prática como o comparador de inflação doméstica funciona.',
+        highlights: [
+          {
+            title: 'Simulador interativo de carrinho em tempo real',
+            description:
+              'Permite marcar produtos no carrinho, alterar quantidades e resetar a cesta, recalculando instantaneamente em BRL o gasto previsto, o comparativo com o mês anterior e os badges de economia ou aumento.',
+          },
+          {
+            title: 'Vitrine do Scanner Híbrido (NFC-e SEFAZ + IA Vision)',
+            description:
+              'Explica visualmente os dois caminhos de captura — leitura de QR Code em 1 segundo direto da SEFAZ e foto do cupom via Gemini Flash Vision — até a tela de conferência.',
+          },
+          {
+            title: 'Arquitetura orientada à conversão e Progressive Onboarding',
+            description:
+              'Comunica a garantia 100% Offline-First, tabela comparativa contra listas comuns de papel/bloco de notas, depoimentos de uso real e FAQ técnico sobre privacidade e funcionamento sem internet.',
+          },
+        ],
+      },
+      metrics: {
+        title: 'Indicadores de engenharia e produto',
+        note: 'Métricas da arquitetura mobile Offline-First, IA e suíte de verificação.',
+        items: [
+          {
+            label: 'Operação Offline-First',
+            value: '100%',
+            detail: '5 tabelas relacionais no WatermelonDB sem depender de rede no mercado',
+          },
+          {
+            label: 'Leitura via QR NFC-e',
+            value: '~1s',
+            detail: 'Extração exata de itens, EAN e centavos + fallback Gemini Vision',
+          },
+          {
+            label: 'Custo de IA por cupom',
+            value: '<R$0,001',
+            detail: 'Foto comprimida enviada ao Gemini 2.5 Flash com saída JSON tipada',
+          },
+          {
+            label: 'Cobertura E2E & CI',
+            value: '3 camadas',
+            detail: 'Testes unitários de regras/parser, Playwright Web e 4 fluxos Maestro',
+          },
+        ],
+      },
+    },
+  },
   {
     slug: 'b2b-logistics-dashboard',
     name: 'Enterprise B2B Logistics Dashboard',

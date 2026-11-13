@@ -298,6 +298,54 @@ export default function CaseStudyPage({ params }: CaseStudyPageProps) {
         </div>
       </section>
 
+      {/* Landing Page & Produto Web */}
+      {study.landingPage && (
+        <section className="border-b border-zinc-100 px-6 py-16 dark:border-white/5 sm:py-20">
+          <div className="mx-auto flex w-full max-w-[1100px] flex-col gap-8">
+            <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
+              <div className="flex flex-col gap-1">
+                <h2 className="font-bold text-2xl text-zinc-900 dark:text-white">
+                  {study.landingPage.title}
+                </h2>
+                <p className="text-sm text-zinc-500 dark:text-zinc-400">
+                  {study.landingPage.subtitle}
+                </p>
+              </div>
+
+              <a
+                href={study.landingPage.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex w-fit items-center gap-2 rounded-full border border-zinc-200 px-4 py-2 text-xs font-semibold text-zinc-700 transition-colors hover:border-green-500 hover:text-green-600 dark:border-white/15 dark:text-zinc-200 dark:hover:border-green-400 dark:hover:text-green-400"
+              >
+                Abrir Landing Page ao vivo
+                <ExternalLink size={14} aria-hidden="true" />
+              </a>
+            </div>
+
+            <p className="max-w-3xl text-base leading-relaxed text-zinc-600 dark:text-zinc-400">
+              {study.landingPage.description}
+            </p>
+
+            <div className="grid gap-5 lg:grid-cols-3">
+              {study.landingPage.highlights.map((item) => (
+                <div
+                  key={item.title}
+                  className="flex flex-col gap-2.5 rounded-2xl border border-zinc-100 p-6 dark:border-white/5 dark:bg-zinc-900/50"
+                >
+                  <h3 className="font-bold text-base leading-snug text-zinc-900 dark:text-white">
+                    {item.title}
+                  </h3>
+                  <p className="text-sm leading-relaxed text-zinc-600 dark:text-zinc-400">
+                    {item.description}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
       {/* Métricas */}
       {study.metrics && (
         <section className="px-6 py-16 sm:py-20">
