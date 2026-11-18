@@ -553,6 +553,155 @@ export const services: Service[] = [
  */
 export const projects: Project[] = [
   {
+    slug: 'nft-marketplace',
+    name: 'Kurio · NFT Marketplace',
+    tagline:
+      'Marketplace de NFTs com estado em tempo real, idempotência no checkout e simulação de rede',
+    description:
+      'Aplicação completa de Marketplace de NFTs em React 19, TypeScript, TanStack Router, TanStack Query, Axios, Socket.IO, Tailwind CSS e shadcn/ui. Inclui catálogo paginado com filtros combináveis e cancelamento via AbortSignal, favoritos com atualização otimista e rollback, checkout idempotente (Idempotency-Key + quoteFingerprint), engine em tempo real com MSW + @mswjs/socket.io-binding e painel interativo com 15 cenários de rede e falha.',
+    image: '/images/nft-marketplace.png',
+    tech: [
+      'React',
+      'TypeScript',
+      'TanStack Router',
+      'TanStack Query',
+      'Tailwind CSS',
+      'Socket.IO',
+      'MSW',
+      'Playwright',
+    ],
+    repo: 'https://github.com/eleazar-nascimento/nft-marketplace',
+    demo: 'https://nft-marketplace-seven-sooty.vercel.app',
+    featured: true,
+    year: '2026',
+    caseStudy: {
+      eyebrow: 'ESTUDO DE CASO · WEB & TEMPO REAL',
+      title: 'Kurio · NFT Marketplace',
+      subtitle:
+        'Catálogo paginado, favoritos otimistas, checkout idempotente e eventos em tempo real com MSW + Socket.IO',
+      intro:
+        'Aplicação web de Marketplace de NFTs construída com React 19, TypeScript, TanStack Router, TanStack Query, Axios, Tailwind CSS, shadcn/ui e Zod. Estruturada em camadas desacopladas (contratos Zod, cliente HTTP puro, hooks de estado e camada de mocks isolada com MSW e @mswjs/socket.io-binding), a aplicação reproduz fluxos reais de e-commerce Web3 — incluindo mesclagem de carrinho visitante ao autenticar, aritmética decimal em ETH via BigInt em wei, reconciliação em tempo real via Socket.IO e painel de simulação com 15 presets de latência e falha.',
+      facts: [
+        {
+          label: 'Meu papel',
+          value: 'Arquitetura front-end, contratos tipados, camada de mocks e suíte E2E',
+        },
+        {
+          label: 'Entrega',
+          value:
+            '9 telas funcionais, painel de 15 cenários MSW + Socket.IO, 12 cenários E2E e auditoria Lighthouse',
+        },
+        {
+          label: 'Stack',
+          value:
+            'React 19, TypeScript, TanStack Router, TanStack Query, Axios, Socket.IO, Tailwind CSS, shadcn/ui, Zod, MSW, Playwright',
+        },
+        { label: 'Período', value: '2026 · desafio técnico front-end' },
+      ],
+      problem: {
+        title: 'O problema',
+        description:
+          'Marketplaces de ativos digitais exigem consistência rigorosa entre catálogo, carrinho, cotação e liquidação — especialmente sob latência variável, atualizações concorrentes de preço/estoque e falhas parciais de rede.',
+        points: [
+          'Evitar compras duplicadas ou divergência de valores quando ocorrem timeouts no envio do pedido ou mudanças de preço/estoque em tempo real.',
+          'Manter a interface responsiva com atualizações otimistas (como curtidas/favoritos) sem deixar o cache inconsistente quando o servidor retorna erro.',
+          'Demonstrar e testar de forma determinística cenários extremos de rede (offline, 503, respostas fora de ordem, sessão expirada e recusa de carteira) diretamente no navegador.',
+        ],
+      },
+      decisions: [
+        {
+          choice:
+            'Camada de rede isolada com MSW + @mswjs/socket.io-binding e contratos Zod compartilhados',
+          why: 'Em vez de espalhar dados falsos pelos componentes, todas as chamadas passam por uma instância Axios pura (/api/*) validada por schemas Zod e interceptada no Service Worker, mantendo o código da UI agnóstico ao ambiente de simulação.',
+          pros: [
+            'Permite alternar entre 15 cenários de rede em tempo real sem alterar código de produção',
+            'Contratos REST e eventos Socket.IO validados com a mesma tipagem TypeScript + Zod',
+          ],
+          cons: [
+            'Exige inicialização assíncrona do mock runtime antes de importar a árvore React para que o engine.io-client capture o WebSocket interceptado',
+          ],
+        },
+        {
+          choice:
+            'Checkout idempotente com Idempotency-Key, quoteFingerprint e aritmética em wei (BigInt)',
+          why: 'Valores em ETH sofrem erros de precisão em ponto flutuante e reenvios após timeout podem duplicar pedidos. A camada de domínio calcula totais em wei usando BigInt, gera um fingerprint criptográfico da cotação e reutiliza a mesma Idempotency-Key em retentativas.',
+          pros: [
+            'Recuperação segura após 504 TIMEOUT sem duplicar a compra',
+            'Bloqueio automático e alerta acessível quando o preço ou estoque muda antes da confirmação',
+          ],
+          cons: [
+            'Aumenta a complexidade do fluxo de revisão no checkout ao exigir confirmação explícita (POST /api/cart/acknowledge) quando a cotação fica obsoleta',
+          ],
+        },
+        {
+          choice:
+            'Isolamento de cache por usuário no TanStack Query e cancelamento via AbortSignal',
+          why: 'Contas diferentes e sessões de visitante não podem vazar dados em cache. Todas as query keys privadas incluem o userId (e escopo guest/user para carrinho) e todos os queryFn repassam o AbortSignal ao Axios.',
+          pros: [
+            'Descarta respostas lentas fora de ordem quando filtros e buscas mudam rapidamente',
+            'Preserva rascunho de checkout e rota de retorno ao expirar sessão, retomando o fluxo após novo login',
+          ],
+          cons: [
+            'Requer disciplina na invalidação coordenada e mesclagem do carrinho visitante (X-Guest-Cart-Id) no login/cadastro',
+          ],
+        },
+      ],
+      challenges: [
+        {
+          title: 'Interceptação do Socket.IO v4 pelo MSW antes da avaliação de módulos',
+          challenge:
+            'O engine.io-client captura globalThis.WebSocket no momento em que o módulo é carregado, e o WebSocketHandler do MSW remove o prefixo /socket.io/ do pathname antes de comparar a URL.',
+          solution:
+            'A inicialização em src/main.tsx aguarda await startMockRuntime() antes do import dinâmico de App.tsx, e o handler WebSocket utiliza ws.link(/^wss?:\\/\\//) com controle explícito de salas e autenticação por conexão (session.identify).',
+        },
+        {
+          title: 'Reconciliação de eventos em tempo real fora de ordem ou duplicados',
+          challenge:
+            'Eventos nft.updated e order.updated podem chegar duplicados ou com versão anterior à já obtida via REST.',
+          solution:
+            'O RealtimeProvider mantém um Set de IDs já processados (seenEventsRef) e um Map de versões por recurso (versionsRef) alimentado tanto pelo REST quanto pelo Socket.IO, descartando eventos obsoletos e revalidando queries ativas na reconexão.',
+        },
+        {
+          title: 'Contraste WCAG AA em tema escuro e estabilidade visual (CLS)',
+          challenge:
+            'A paleta escura (#2B2B2B / #3B3B3B) exige calibração cuidadosa de contraste e dimensionamento de imagens para evitar deslocamento de layout.',
+          solution:
+            'Os textos secundários (#C7C7C5 / #B5B5B3) e botões primários foram calibrados para razão acima de 4.5:1, e os assets locais (16 artes SVG de NFTs e 12 avatares) usam dimensões explícitas e fetchPriority="high" nos destaques.',
+        },
+      ],
+      metrics: {
+        title: 'Auditoria Lighthouse e cobertura de testes',
+        note: 'Mediana de 3 execuções no Lighthouse 13.6.0 (Chromium Headless) sobre o build de produção + suíte E2E.',
+        items: [
+          {
+            label: 'Lighthouse · Desktop (/)',
+            value: '100',
+            detail:
+              'Performance 100 · Accessibility 100 · Best Practices 100 · SEO 100 (LCP 737ms)',
+          },
+          {
+            label: 'Lighthouse · Mobile (/)',
+            value: '94',
+            detail:
+              'Performance 94 · Accessibility 100 · Best Practices 100 · SEO 100 (CLS 0)',
+          },
+          {
+            label: 'Suíte E2E Playwright',
+            value: '12 cenários',
+            detail:
+              'Catálogo, auth, favoritos otimistas, checkout, carteiras, tempo real e regressão visual',
+          },
+          {
+            label: 'Presets de simulação',
+            value: '15 cenários',
+            detail:
+              'Latência variável, out-of-order, offline, 503, timeout idempotente e recusa',
+          },
+        ],
+      },
+    },
+  },
+  {
     slug: 'econo-market',
     name: 'EconoMarket · Lista & Comparador de Preços',
     tagline: 'App mobile Offline-First que rastreia inflação doméstica via NFC-e e IA',
